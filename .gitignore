@@ -1,0 +1,7 @@
+/Note.md
+
+/backend/API/bin
+/backend/API/appsettings.json
+/backend/API/appsettings.*.json
+/backend/API/obj
+
