@@ -5,14 +5,14 @@ export interface ActorDTO{
     name: string;
     biography: string;
     dateOfBirth: Date;
-    picture: string;
+    image: string;
 }
 
 export interface CreateActorDTO{
     name: string;
     dateOfBirth?: Date;
-    picture?: File;
-    pictureURL?: string;
+    image?: File;
+    imageURL?: string;
     biography?: string;
 }
 
@@ -20,7 +20,7 @@ export interface ActorMovieDTO {
     id: number;
     name: string;
     character: string;
-    picture: string;
+    image: string;
 }
 
 export interface ActorFormProps {
