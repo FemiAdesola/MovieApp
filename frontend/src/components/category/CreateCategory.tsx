@@ -1,38 +1,28 @@
-import React from 'react';
-import { Form, Formik } from "formik";
-import { Link } from "react-router-dom";
-import *  as Yup from "yup"
-
-import Button from '../features/Button';
-import TextField from '../features/form/TextField';
-
+import React from "react";
+import CategoryForm from "./CategoryForm";
 
 const CreateCategory = () => {
-    return (
-      <div className="container">
-        <h3>Create</h3>
-        <Formik
-          initialValues={{ name: "" }}
-          onSubmit={(value) => {
+  return (
+    // <>
+    //       <h3>Create Categories</h3>
+    //       {/* <DisplayErrors errors={errors} /> */}
+    //       <CategoryForm model={{ name: '' }}
+    //           onSubmit={async value => {
+    //              await create(value);
+    //           }}
+    //       />
+    //   </>
+    <div className="container">
+      <h3>Create Categories</h3>
+      <CategoryForm
+        model={{ name: "" }}
+        onSubmit={async (value) => {
+          await new Promise(r => setTimeout(r, 4000));
             console.log(value);
-          }}
-          validationSchema={Yup.object({
-            name: Yup.string()
-              .required("This field is required")
-              .max(50, "Max length is 50 characters")
-              .firstLetterUppercase(),
-          })}
-        >
-          <Form>
-            <TextField field="name" displayName="Name" />
-            <Button type="submit">Save changes</Button>
-            <Link className="btn btn-secondary" to="/categories">
-              Cancle
-            </Link>
-          </Form>
-        </Formik>
-      </div>
-    );
+        }}
+      />
+    </div>
+  );
 };
 
 export default CreateCategory;
