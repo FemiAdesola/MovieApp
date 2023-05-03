@@ -11,7 +11,6 @@ import CreateActor from "../actors/CreateActor";
 import Cinemas from "../cinemas/Cinemas";
 import UpdateCinema from "../cinemas/UpdateCinema";
 import CreateCinema from "../cinemas/CreateCinema";
-import MovieList from "../movies/MovieList";
 import UpdateMovie from "../movies/UpdateMovie";
 import CreateMovie from "../movies/CreateMovie";
 import FilterMovies from "../movies/FilterMovies";

@@ -1,3 +1,4 @@
+import { CoordinateDTO } from "./map";
 
 export interface TextFieldProps {
     field: string
@@ -9,7 +10,6 @@ export interface DateFieldProps{
     displayName: string;
 }
 
-
 export interface ImageFieldProps {
     displayName: string;
     imageURL: string;
@@ -19,4 +19,10 @@ export interface ImageFieldProps {
 export interface MarkdownFieldProps{
     displayName: string;
     field: string;
+}
+
+export interface MapFieldProps {
+  coordinates: CoordinateDTO[];
+  latField: string;
+  lngField: string;
 }

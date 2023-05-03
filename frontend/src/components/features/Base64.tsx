@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const Base64 = (file: File) => {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
