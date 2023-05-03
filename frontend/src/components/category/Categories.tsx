@@ -5,7 +5,7 @@ const Categories = () => {
   return (
     <div className="container">
       <h3>Categories</h3>
-      <Link className="bt btn-primary" to="create">
+      <Link className="btn btn-primary" to="create">
         Create Category
       </Link>
     </div>

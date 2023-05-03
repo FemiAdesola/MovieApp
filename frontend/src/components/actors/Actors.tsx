@@ -5,7 +5,7 @@ const Actors = () => {
     return (
       <div className="container">
         <h3>Actors</h3>
-        <Link className="bt btn-primary" to="create">
+        <Link className="btn btn-primary" to="create">
           Create Actor
         </Link>
       </div>
