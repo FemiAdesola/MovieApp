@@ -26,3 +26,8 @@ export interface MapFieldProps {
   latField: string;
   lngField: string;
 }
+
+export interface CheckBoxFieldProps {
+  displayName: string;
+  field: string;
+}
