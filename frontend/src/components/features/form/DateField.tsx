@@ -1,6 +1,7 @@
 import React from 'react';
-import { DateFieldProps } from '../../types/dateFiled';
+
 import { useFormikContext } from 'formik';
+import { DateFieldProps } from '../../types/field';
 
 const DateField = (props: DateFieldProps) => {
     const { values, validateForm, touched, errors } = useFormikContext<any>();

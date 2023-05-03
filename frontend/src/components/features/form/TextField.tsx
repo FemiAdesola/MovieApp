@@ -1,7 +1,7 @@
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 
-import { TextFieldProps } from "../../types/form";
+import { TextFieldProps } from "../../types/field";
 
 const TextField = (props: TextFieldProps) => {
   return (

@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
 
-import { ImageFieldProps } from '../../types/imageField';
 import { useFormikContext } from 'formik';
 import { Base64 } from '../Base64';
+import { ImageFieldProps } from '../../types/field';
 
 const ImageField = (props: ImageFieldProps) => {
     const [imageBase64, setImageBase64] = useState("");
