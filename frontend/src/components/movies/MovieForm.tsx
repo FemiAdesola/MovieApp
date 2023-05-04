@@ -6,6 +6,7 @@ import { MovieFormProps } from "../types/movie";
 import TextField from '../features/form/TextField';
 import DateField from '../features/form/DateField';
 import ImageField from '../features/form/ImageField';
+import MarkdownField from '../features/form/MarkdownField';
 import { ActorMovieDTO } from '../types/actor';
 import Button from '../features/Button';
 import { Link } from 'react-router-dom';
@@ -44,8 +45,10 @@ const MovieForm = (props: MovieFormProps) => {
         onSubmit={(values, actions) => {
           values.categoryIds = selectedCategories.map((item) => item.key);
           values.cinemasIds = selectedMovieCinemas.map((item) => item.key);
+          values.actors = selectedActors;
           props.onSubmit(values, actions);
         }}
+        // onSubmit={props.onSubmit}
         validationSchema={Yup.object({
           title: Yup.string()
             .required("This field is required")
@@ -63,6 +66,8 @@ const MovieForm = (props: MovieFormProps) => {
               field="poster"
               imageURL={props.model.posterURL}
             />
+
+            {/* <MarkdownField displayName="Summary" field="summary" /> */}
 
             <MuiltipleSelectorField
               displayName="Categories"
@@ -114,6 +119,7 @@ const MovieForm = (props: MovieFormProps) => {
                 </>
                )}
             /> 
+
             <Button disabled={formikProps.isSubmitting} type="submit">
               Save Changes
             </Button>

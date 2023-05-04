@@ -37,6 +37,7 @@ export interface CreateMovieDTO {
   posterURL?: string;
   categoryIds?: number[];
   cinemasIds?: number[];
+  actors?: ActorMovieDTO[];
 }
 
 export interface MovieFormProps {
