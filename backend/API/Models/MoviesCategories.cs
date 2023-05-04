@@ -1,6 +1,6 @@
 namespace API.Models
 {
-    public class MoviesCategories
+    public class MoviesCategories : BaseModel
     {
         public int CategoryId { get; set; }
         public int MovieId { get; set; }

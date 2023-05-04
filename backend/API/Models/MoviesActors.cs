@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.Models
 {
-    public class MoviesActors
+    public class MoviesActors : BaseModel
     {
         public int ActorId { get; set; }
         public int MovieId { get; set; }
