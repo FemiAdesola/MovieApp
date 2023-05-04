@@ -1,28 +1,38 @@
+using API.Database;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+
 
 namespace API.Controllers
 {
     [Route("api/v1/categories")]
-    public class CategoryController
+    public class CategoryController : ControllerBase
     {
         private readonly ILogger<CategoryController> _logger;
-        public CategoryController(ILogger<CategoryController> logger)
+        private readonly AppDbContext _context;
+
+        public CategoryController(ILogger<CategoryController> logger, AppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpPost]
-        public async virtual Task<IActionResult> Create(Category request)
+        public async Task<ActionResult> Create([FromBody] Category request)
         {
-            throw new NotImplementedException();
+            _context.Add(request);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
+
         [HttpGet]
-        public async virtual Task<ActionResult<List<Category>>> GetAll()
+        public async Task<ActionResult<List<Category>>> GetAll()
         {
             _logger.LogInformation("Getting all the genres");
-            return new List<Category>() { new Category() { Id = 1, Name = "Comedy" } };
+            return await _context.Categories.ToListAsync();
         }
     }
 }
