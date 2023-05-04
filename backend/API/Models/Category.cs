@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using API.Helper;
 
 namespace API.Models
 {
@@ -6,6 +7,7 @@ namespace API.Models
     {
         [Required(ErrorMessage = "The field with name {0} is required")]
         [StringLength(50)]
+        [FirstLetterUppercase]
         public string Name { get; set; } = null!;
     }
 }
