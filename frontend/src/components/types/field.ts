@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+import { ActorMovieDTO } from "./actor";
 import { CoordinateDTO } from "./map";
 
 export interface TextFieldProps {
@@ -30,4 +32,27 @@ export interface MapFieldProps {
 export interface CheckBoxFieldProps {
   displayName: string;
   field: string;
+}
+
+export interface MultipleSelectorFieldProps {
+  displayName: string;
+  selected: MultipleSelectorModel[];
+  nonSelected: MultipleSelectorModel[];
+  onChange(
+    selected: MultipleSelectorModel[],
+    nonSelected: MultipleSelectorModel[]
+  ): void;
+}
+
+export interface MultipleSelectorModel {
+  key: number;
+  value: string;
+}
+
+export interface TypeAheadActorsFieldProps {
+  displayName: string;
+  actors: ActorMovieDTO[];
+  onAdd(actors: ActorMovieDTO[]): void;
+  onRemove(actor: ActorMovieDTO): void;
+  listUI(actor: ActorMovieDTO): ReactElement;
 }

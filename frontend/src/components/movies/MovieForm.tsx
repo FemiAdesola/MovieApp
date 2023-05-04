@@ -6,16 +6,46 @@ import { MovieFormProps } from "../types/movie";
 import TextField from '../features/form/TextField';
 import DateField from '../features/form/DateField';
 import ImageField from '../features/form/ImageField';
+import { ActorMovieDTO } from '../types/actor';
 import Button from '../features/Button';
 import { Link } from 'react-router-dom';
 import CheckBoxField from '../features/form/CheckBoxField';
+import MuiltipleSelectorField from '../features/form/MuiltipleSelectorField';
+import { MultipleSelectorModel } from '../types/field';
+import TypeAheadActorField from '../features/form/TypeAheadActorField';
 
 const MovieForm = (props: MovieFormProps) => {
-   
+    const [selectedCategories, setSelectedCategories] = useState(
+      mapToModel(props.selectedCategories)
+    );
+    const [nonSelectedCategories, setNonSelectedCategories] = useState(
+      mapToModel(props.nonSelectedCategories)
+    );
+
+    const [selectedMovieCinemas, setSelectedMovieCinemas] = useState(
+      mapToModel(props.selectedMovieCinemas)
+    );
+    const [nonSelectedMovieCinemas, setNonSelectedMovieCinemas] = useState(
+      mapToModel(props.nonSelectedMovieCinemas)
+    );
+
+  const [selectedActors, setSelectedActors] = useState(props.selectedActors);
+
+    function mapToModel(
+      items: { id: number; name: string }[]
+    ): MultipleSelectorModel[] {
+      return items.map((item) => {
+        return { key: item.id, value: item.name };
+      });
+    }
     return (
       <Formik
         initialValues={props.model}
-        onSubmit={props.onSubmit}
+        onSubmit={(values, actions) => {
+          values.categoryIds = selectedCategories.map((item) => item.key);
+          values.cinemasIds = selectedMovieCinemas.map((item) => item.key);
+          props.onSubmit(values, actions);
+        }}
         validationSchema={Yup.object({
           title: Yup.string()
             .required("This field is required")
@@ -33,6 +63,57 @@ const MovieForm = (props: MovieFormProps) => {
               field="poster"
               imageURL={props.model.posterURL}
             />
+
+            <MuiltipleSelectorField
+              displayName="Categories"
+              nonSelected={nonSelectedCategories}
+              selected={selectedCategories}
+              onChange={(selected, nonSelected) => {
+                setSelectedCategories(selected);
+                setNonSelectedCategories(nonSelected);
+              }}
+            />
+
+            <MuiltipleSelectorField
+              displayName="Movie Cinemas"
+              nonSelected={nonSelectedMovieCinemas}
+              selected={selectedMovieCinemas}
+              onChange={(selected, nonSelected) => {
+                setSelectedMovieCinemas(selected);
+                setNonSelectedMovieCinemas(nonSelected);
+              }}
+            />
+
+            <TypeAheadActorField
+              displayName="Actors"
+              actors={selectedActors}
+              onAdd={(actors) => {
+                setSelectedActors(actors);
+              }}
+              onRemove={(actor) => {
+                const actors = selectedActors.filter((x) => x !== actor);
+                setSelectedActors(actors);
+              }}
+              listUI={(actor: ActorMovieDTO) => (
+                <>
+                  {actor.name} /{" "}
+                  <input
+                    placeholder="Character"
+                    type="text"
+                    value={actor.character}
+                    onChange={(e) => {
+                      const index = selectedActors.findIndex(
+                        (x) => x.id === actor.id
+                      );
+
+                      const actors = [...selectedActors];
+                      actors[index].character = e.currentTarget.value;
+                      setSelectedActors(actors);
+                    }}
+                  />
+                </>
+               )}
+            /> 
             <Button disabled={formikProps.isSubmitting} type="submit">
               Save Changes
             </Button>

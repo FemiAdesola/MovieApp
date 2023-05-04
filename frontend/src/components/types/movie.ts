@@ -10,7 +10,6 @@ export interface IMovieDTO
     poster: string;
 }
 
-
 export interface IMovieListProps{
     movies? : IMovieDTO[];
 }
@@ -29,20 +28,26 @@ export interface IFilterMoviesFormProps{
     recordsPerPage: number;
 }
 
-export interface CreateMovieDTO{
-    title: string;
-    inCinemas: boolean;
-    trailer: string;
-    releaseDate?: Date;
-    poster?: File;
-    posterURL?: string;
-
-
+export interface CreateMovieDTO {
+  title: string;
+  inCinemas: boolean;
+  trailer: string;
+  releaseDate?: Date;
+  poster?: File;
+  posterURL?: string;
+  categoryIds?: number[];
+  cinemasIds?: number[];
 }
+
 export interface MovieFormProps {
   model: CreateMovieDTO;
   onSubmit(
     values: CreateMovieDTO,
     actions: FormikHelpers<CreateMovieDTO>
   ): void;
+  selectedCategories: CategoryDTO[];
+  nonSelectedCategories: CategoryDTO[];
+  selectedMovieCinemas: CinemasDTO[];
+  nonSelectedMovieCinemas: CinemasDTO[];
+  selectedActors: ActorMovieDTO[];
 }

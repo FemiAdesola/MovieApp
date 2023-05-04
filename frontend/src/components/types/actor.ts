@@ -17,10 +17,10 @@ export interface CreateActorDTO{
 }
 
 export interface ActorMovieDTO {
-    id: number;
-    name: string;
+    id?: number;
+    name?: string;
     character: string;
-    image: string;
+    image?: string;
 }
 
 export interface ActorFormProps {
