@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using API.Database;
+using API.EXception;
 using API.Extensions;
 
 internal class Program
@@ -10,7 +11,10 @@ internal class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers()
+        builder.Services.AddControllers(options =>{
+            options.Filters.Add(typeof(MyException));
+            options.Filters.Add(typeof(ParseBadRequest));
+        }).ConfigureApiBehaviorOptions(BadRequestBehavior.Parse)
         .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -49,7 +53,11 @@ internal class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.UseRouting();
-        app.MapControllers();
+        // app.MapControllers();
+        app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
         app.Run();
     }
