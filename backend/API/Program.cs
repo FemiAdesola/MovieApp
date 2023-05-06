@@ -25,6 +25,7 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddSwaggerDocumentation();
+        builder.Services.AddApplicationServices(builder.Configuration);
         builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
         builder.Services.AddCors(options =>
                 {

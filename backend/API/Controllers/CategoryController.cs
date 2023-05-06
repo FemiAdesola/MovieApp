@@ -1,5 +1,7 @@
 using API.Database;
+using API.DTOs;
 using API.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,27 +14,31 @@ namespace API.Controllers
     {
         private readonly ILogger<CategoryController> _logger;
         private readonly AppDbContext _context;
+        protected readonly IMapper _mapper;
 
-        public CategoryController(ILogger<CategoryController> logger, AppDbContext context)
+        public CategoryController(ILogger<CategoryController> logger, AppDbContext context, IMapper mapper)
         {
             _logger = logger;
             _context = context;
+             _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] Category request)
+        public async Task<ActionResult> Create([FromBody] CreateCategoryDTO createCategoryDTO)
         {
-            _context.Add(request);
+            var category = _mapper.Map<Category>(createCategoryDTO);
+            _context.Add(createCategoryDTO);
             await _context.SaveChangesAsync();
             return NoContent();
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Category>>> GetAll()
+        public async Task<ActionResult<List<CategoryDTO>>> GetAll()
         {
             _logger.LogInformation("Getting all the genres");
-            return await _context.Categories.ToListAsync();
+            var category = await _context.Categories.ToListAsync();
+            return _mapper.Map<List<CategoryDTO>>(category);
         }
     }
 }
