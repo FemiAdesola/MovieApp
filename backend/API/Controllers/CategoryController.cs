@@ -1,6 +1,7 @@
 using API.Database;
 using API.DTOs;
 using API.Models;
+using API.Helper;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,10 +35,17 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoryDTO>>> GetAll()
+        public async Task<ActionResult<List<CategoryDTO>>> GetAll([FromQuery] PaginationDTO paginationDTO)
         {
-            _logger.LogInformation("Getting all the genres");
-            var category = await _context.Categories.ToListAsync();
+            // _logger.LogInformation("Getting all the genres");
+            var queryable = _context.Categories.AsQueryable();
+            
+            await HttpContext.InsertParametersPaginationInHeader(queryable);
+            var category = await queryable
+                .OrderBy(x =>x.Name)
+                .Paginate(paginationDTO)
+                .ToListAsync();
+
             return _mapper.Map<List<CategoryDTO>>(category);
         }
     }

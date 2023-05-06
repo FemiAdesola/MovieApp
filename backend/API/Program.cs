@@ -36,6 +36,7 @@ internal class Program
                               .AllowAnyOrigin()
                               .AllowAnyHeader()
                               .AllowAnyMethod()
+                              .WithExposedHeaders(new string[] {"totalAmountOfRecords"})
                           ;
                       });
                   });
