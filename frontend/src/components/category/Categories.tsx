@@ -5,23 +5,46 @@ import { CategoryDTO } from "../types/category";
 import { urlCategories } from "../common/endpoint";
 import ResultList from "../utils/ResultList";
 import Button from "../features/Button";
+import Pagination from "../utils/Pagination";
+import RecordsPerPageSelection from "../utils/RecordsPerPageSelection";
 
 const Categories = () => {
   const [categories, setCategories] = useState<CategoryDTO[]>();
+  const [totalAmountOfPages, setTotalAmountOfPages] = useState(0);
+  const [recordsPerPage, setRecordsPerPage] = useState(5);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    axios.get(urlCategories)
+    axios.get(urlCategories, {
+      params: {page, recordsPerPage}
+    })
       .then((response: AxiosResponse<CategoryDTO[]>) => {
         // console.log(response.data);
+        const totalAmountOfRecords = parseInt(
+          response.headers["totalamountofrecords"], 20
+        );
+        setTotalAmountOfPages(Math.ceil(totalAmountOfRecords / recordsPerPage));
         setCategories(response.data);
     });
-  }, [])
+  }, [page, recordsPerPage])
   return (
     <div>
       <h3>Categories</h3>
       <Link className="btn btn-primary" to="create">
         Create Categories
       </Link>
+      <RecordsPerPageSelection
+        onChange={amountOfRecords => {
+          setPage(1)
+          setRecordsPerPage(amountOfRecords);
+        }}
+      />
+      <Pagination
+        currentPage={page}
+        totalAmountOfPages={totalAmountOfPages}
+        onChange={(newPage) => setPage(newPage)}
+        radio={1}
+      />
       <ResultList list={categories}>
         <table className=" table table-striped">
           <thead>

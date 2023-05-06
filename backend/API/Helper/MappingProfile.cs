@@ -9,7 +9,7 @@ namespace API.Helper
         public MappingProfile()
         {
             CreateMap<CategoryDTO, Category>().ReverseMap();
-            CreateMap<CreateCategoryDTO, Category>().ReverseMap();
+            CreateMap<CreateCategoryDTO, Category>();
         }
 
     }

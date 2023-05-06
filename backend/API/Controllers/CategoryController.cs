@@ -28,7 +28,7 @@ namespace API.Controllers
         public async Task<ActionResult> Create([FromBody] CreateCategoryDTO createCategoryDTO)
         {
             var category = _mapper.Map<Category>(createCategoryDTO);
-            _context.Add(createCategoryDTO);
+            _context.Add(category);
             await _context.SaveChangesAsync();
             return NoContent();
         }
