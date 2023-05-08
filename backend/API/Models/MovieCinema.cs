@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
+using NetTopologySuite.Geometries;
 
 namespace API.Models
 {
@@ -7,6 +7,6 @@ namespace API.Models
     {
         [StringLength(maximumLength: 75)]
         public string Name { get; set; } = null!;
-        // public Point Location { get; set; }
+        public Point Location { get; set; }
     }
 }

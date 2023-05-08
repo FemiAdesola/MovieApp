@@ -19,7 +19,11 @@ namespace API.Database
 
             var connString = _config.GetConnectionString("DefaultConnection");
             optionsBuilder
-                .UseNpgsql(connString)
+                .UseNpgsql(
+                    connString, 
+                    sqlOptions  => sqlOptions.UseNetTopologySuite())
+                
+               
                 // .AddInterceptors(new AppDbContextSaveChangesInterceptor())
                 .UseSnakeCaseNamingConvention();
         }
@@ -33,5 +37,6 @@ namespace API.Database
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Actor> Actors { get; set; } = null!;
         public DbSet<Movie> Movies { get; set; } = null!;
+        public DbSet<MovieCinema> MovieCinemas { get; set; } = null!;
     }
 }

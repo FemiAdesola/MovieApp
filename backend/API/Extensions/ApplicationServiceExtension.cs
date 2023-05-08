@@ -1,6 +1,8 @@
 using API.Helper;
 using API.Services.Implementations;
 using API.Services.Interface;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 
 namespace API.Extensions
 {
@@ -14,6 +16,10 @@ namespace API.Extensions
             services.AddScoped<IFileStorage, AzureFileStorage>();
             // services.AddScoped<IFileStorage, LocalFileStorage>();
             services.AddHttpContextAccessor();
+              services.AddSingleton<GeometryFactory>(
+                NtsGeometryServices
+                .Instance
+                .CreateGeometryFactory(srid:4326));
             return services;
         }
     }
