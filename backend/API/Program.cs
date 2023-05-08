@@ -53,7 +53,7 @@ internal class Program
         app.UseSwaggerDocumentation();
         app.UseCors("CorsPolicy");
         app.UseHttpsRedirection();
-     
+        app.UseStaticFiles();
         app.UseRouting();
            app.UseAuthorization();
         // app.MapControllers();

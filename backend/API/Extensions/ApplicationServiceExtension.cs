@@ -12,6 +12,8 @@ namespace API.Extensions
      
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddScoped<IFileStorage, AzureFileStorage>();
+            // services.AddScoped<IFileStorage, LocalFileStorage>();
+            services.AddHttpContextAccessor();
             return services;
         }
     }
