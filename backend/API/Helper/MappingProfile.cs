@@ -10,6 +10,10 @@ namespace API.Helper
         {
             CreateMap<CategoryDTO, Category>().ReverseMap();
             CreateMap<CreateCategoryDTO, Category>();
+
+            CreateMap<ActorDTO, Actor>().ReverseMap();
+            CreateMap<CreateActorDTO, Actor>()
+                .ForMember(x=>x.Image, options=>options.Ignore());
         }
 
     }

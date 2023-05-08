@@ -7,7 +7,7 @@ namespace API.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/v1/[controller]s")]
-    public class BaseApiController
+    public class BaseApiController : ControllerBase
     {
         
     }
