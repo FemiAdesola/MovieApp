@@ -20,7 +20,8 @@ namespace API.Extensions
             {
                 var geometryFactor = provider.GetRequiredService<GeometryFactory>();
                 config.AddProfile(new MappingProfile(geometryFactor));
-            }));
+            }).CreateMapper());
+            
             services.AddSingleton<GeometryFactory>(
                 NtsGeometryServices
                 .Instance

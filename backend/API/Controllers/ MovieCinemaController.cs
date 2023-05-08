@@ -10,11 +10,11 @@ namespace API.Controllers
 {
     public class  MovieCinemaController : BaseApiController
     {
-        private readonly ILogger<ActorController> _logger;
+        private readonly ILogger<MovieCinemaController> _logger;
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public MovieCinemaController(ILogger<ActorController> logger, AppDbContext context, IMapper mapper)
+        public MovieCinemaController(ILogger<MovieCinemaController> logger, AppDbContext context, IMapper mapper)
         {
             _logger = logger;
             _context = context;
@@ -47,7 +47,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreateMovieCinemaDTO createMovieCinemaDTO)
+        public async Task<ActionResult> Post(CreateMovieCinemaDTO createMovieCinemaDTO)
         {
             var movieCinema = _mapper.Map<MovieCinema>(createMovieCinemaDTO);
             _context.Add(movieCinema);
