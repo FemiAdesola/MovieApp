@@ -48,5 +48,47 @@ namespace API.Controllers
 
             return _mapper.Map<List<CategoryDTO>>(category);
         }
+
+        [HttpGet( "{Id:int}")]
+        public async Task<ActionResult<CategoryDTO>>Get(int Id)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == Id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<CategoryDTO>(category);
+        }
+
+       [HttpPut("{Id:int}")]
+       public async Task<ActionResult> Update(int Id, [FromBody] CreateCategoryDTO createCategoryDTO)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            category = _mapper.Map(createCategoryDTO, category);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+       [HttpDelete("{Id:int}")]
+        public async Task<ActionResult> Delete(int Id)
+        {
+            var categoryExists = await _context.Categories.AnyAsync(x => x.Id == Id);
+
+            if (!categoryExists)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(new Category() { Id = Id });
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
