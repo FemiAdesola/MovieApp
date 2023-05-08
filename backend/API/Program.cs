@@ -53,8 +53,9 @@ internal class Program
         app.UseSwaggerDocumentation();
         app.UseCors("CorsPolicy");
         app.UseHttpsRedirection();
-        app.UseAuthorization();
+     
         app.UseRouting();
+           app.UseAuthorization();
         // app.MapControllers();
         app.UseEndpoints(endpoints =>
             {

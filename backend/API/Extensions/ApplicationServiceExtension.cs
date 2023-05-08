@@ -1,4 +1,6 @@
 using API.Helper;
+using API.Services.Implementations;
+using API.Services.Interface;
 
 namespace API.Extensions
 {
@@ -9,7 +11,8 @@ namespace API.Extensions
         {
      
             services.AddAutoMapper(typeof(MappingProfile));
-          return services;
+            services.AddScoped<IFileStorage, AzureFileStorage>();
+            return services;
         }
     }
 }

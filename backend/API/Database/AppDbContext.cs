@@ -6,6 +6,10 @@ namespace API.Database
 {
     public class AppDbContext : DbContext 
     {
+        static AppDbContext()
+        {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
         private readonly IConfiguration _config;
         public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration config) : base(options) => _config = config;
 

@@ -9,6 +9,6 @@ namespace API.DTOs
         public string Name { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
         public string? Biography { get; set; }
-        public IFormFile? Image { get; set; } 
+        public IFormFile Image { get; set; } 
     }
 }

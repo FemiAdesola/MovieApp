@@ -2,6 +2,7 @@ using API.Database;
 using API.DTOs;
 using API.Helper;
 using API.Models;
+using API.Services.Interface;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +13,32 @@ namespace API.Controllers
     {
         private readonly ILogger<ActorController> _logger;
         private readonly AppDbContext _context;
-        protected readonly IMapper _mapper;
+        private readonly IMapper _mapper;
+        private readonly IFileStorage _fileStorage;
+        private readonly string containerName = "actors";
 
-        public ActorController(ILogger<ActorController> logger, AppDbContext context, IMapper mapper)
+        public ActorController(
+            ILogger<ActorController> logger, 
+            AppDbContext context, 
+            IMapper mapper,
+            IFileStorage fileStorage)
         {
             _logger = logger;
             _context = context;
             _mapper = mapper;
+            _fileStorage =fileStorage;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromForm] CreateActorDTO createActorDTO)
+        public async Task<ActionResult> Post([FromForm] CreateActorDTO createActorDTO)
         {
-            var actor = _mapper.Map<Category>(createActorDTO);
+            var actor = _mapper.Map<Actor>(createActorDTO);
+
+            if(createActorDTO.Image != null)
+            {
+                actor.Image = await _fileStorage.SaveFile(containerName, createActorDTO.Image);
+            }
+
             _context.Add(actor);
             await _context.SaveChangesAsync();
             return NoContent();
@@ -58,7 +72,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{Id:int}")]
-       public async Task<ActionResult> Update(int Id, [FromBody] CreateActorDTO createActorDTO)
+       public async Task<ActionResult> Update(int Id, [FromForm] CreateActorDTO createActorDTO)
         {
             var actor = await _context.Actors.FirstOrDefaultAsync(x => x.Id == Id);
 
