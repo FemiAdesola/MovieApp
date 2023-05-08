@@ -25,8 +25,19 @@ const UpdateEntity = <TCreation, TRead>(
 
   const update = async (entityToUpdate: TCreation) => {
     try {
-      await axios.put(`${props.url}/${id}`, entityToUpdate);
+      if (props.transformFormData) {
+        const formData = props.transformFormData(entityToUpdate);
+        await axios({
+          method: 'put',
+          url: `${props.url}/${id}`,
+          data: formData,
+          headers: {'Content-Type':'multipart/form-data'}
+        })
+      } else {
+        await axios.put(`${props.url}/${id}`, entityToUpdate);
+      }
       navigate(props.indexURL);
+      
     } catch (err) {
       if (err && err.response) {
         setErrors(err.response.data);

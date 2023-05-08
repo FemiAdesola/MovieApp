@@ -82,6 +82,15 @@ namespace API.Controllers
             }
 
             actor = _mapper.Map(createActorDTO, actor);
+
+            if(createActorDTO.Image != null)
+            {
+                actor.Image = await _fileStorage.UpdateFile(
+                    containerName, 
+                    createActorDTO.Image, 
+                    actor.Image);
+            }
+
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -89,15 +98,16 @@ namespace API.Controllers
        [HttpDelete("{Id:int}")]
         public async Task<ActionResult> Delete(int Id)
         {
-            var actorExists = await _context.Actors.AnyAsync(x => x.Id == Id);
+            var actorExists = await _context.Actors.FirstOrDefaultAsync(x => x.Id == Id);
 
-            if (!actorExists)
+            if (actorExists == null)
             {
                 return NotFound();
             }
 
-            _context.Remove(new Actor() { Id = Id });
+            _context.Remove(actorExists);
             await _context.SaveChangesAsync();
+            await _fileStorage.DeleteFile(actorExists.Image, containerName);
             return NoContent();
         }
     }
