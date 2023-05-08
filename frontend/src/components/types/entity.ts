@@ -11,3 +11,15 @@ export interface UpdateEntityProps<TCreation, TRead> {
     update: (entity: TCreation) => void
   ): ReactElement;
 }
+
+
+export interface EntityProps<T> {
+  url: string;
+  createURL: string;
+  title: string;
+  entityName: string;
+  children(
+    entities: T[],
+    buttons: (updateUrl: string, id: number) => ReactElement
+  ): ReactElement;
+}
