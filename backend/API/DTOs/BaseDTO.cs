@@ -2,6 +2,6 @@ namespace API.DTOs
 {
     public class BaseDTO
     {
-        public int id { get; set; }
+        public int Id { get; set; }
     }
 }
