@@ -57,7 +57,20 @@ namespace API.Controllers
             return new MoviePostGetDTO() { Categories = categoryDTO, MovieCinemas = movieCinemaDTO };
         }
 
-        // for mapping movies according to the order which actor come to UI
+
+        [HttpGet("searchByName/{query}")]
+        public async Task<ActionResult<List<ActorsMovieDTO>>>SearchByName(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query)) { return new List<ActorsMovieDTO> (); }
+            return await _context.Actors
+            .Where (x => x.Name.Contains (query))
+            .OrderBy(x => x.Name)
+            .Select (x => new ActorsMovieDTO { Id = x.Id, Name = x.Name, Image = x.Image })
+            .Take(5)
+            .ToListAsync();
+        }
+
+                // for mapping movies according to the order which actor come to UI
         private void AnnotateActorsOrder(Movie movie)
         {
             if (movie.MoviesActors != null)  
