@@ -52,3 +52,8 @@ export interface MovieFormProps {
   nonSelectedMovieCinemas: CinemasDTO[];
   selectedActors: ActorMovieDTO[];
 }
+
+export interface MoviesPostGetDTOProps {
+  categories: CategoryDTO[];
+  movieCinemas: CinemasDTO[];
+}

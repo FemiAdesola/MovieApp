@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MovieForm from './MovieForm';
 import { CategoryDTO } from '../types/category';
 import { CinemasDTO } from '../types/cinemas';
+import axios, { AxiosResponse } from 'axios';
+import { urlMovies } from '../common/endpoint';
+import { MoviesPostGetDTOProps } from '../types/movie';
+import Loading from '../utils/Loading';
 
 const CreateMovie = () => {
-    const nonSelectedCategories: CategoryDTO[] = [
-      { id: 1, name: "Comedy" },
-      { id: 2, name: "Drama" }
-    ];
-     const nonSelectedMovieCinemas: CinemasDTO[] = [
-       { id: 1, name: "Espoo" },
-       { id: 2, name: "Helsinki" },
-     ];
+  const [nonSelectedCategories, setNonSelectedCategories] =
+    useState<CategoryDTO[]>([])
+  
+    const [nonSelectedMovieCinemas, setNonSelectedMovieCinemas] = useState<
+      CinemasDTO[]
+      >([]);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    axios.get(`${urlMovies}/postget`)
+      .then((response: AxiosResponse<MoviesPostGetDTOProps>) => {
+        setNonSelectedCategories(response.data.categories);
+        setNonSelectedMovieCinemas(response.data.movieCinemas);
+        setLoading(false);
+    })
+  }, [])
     
     return (
       <div>
         <h3>Create movies</h3>
-        <MovieForm
-          model={{ title: "", inCinemas: false, trailer: "" }}
-          onSubmit={(values) => console.log(values)}
-          selectedCategories={[]}
-          nonSelectedCategories={nonSelectedCategories}
-          selectedMovieCinemas={[]}
-          nonSelectedMovieCinemas={nonSelectedMovieCinemas}
-          selectedActors={[]}
-        />
+        {loading ? (
+          <Loading />
+        ) : (
+          <MovieForm
+            model={{ title: "", inCinemas: false, trailer: "" }}
+            onSubmit={(values) => console.log(values)}
+            selectedCategories={[]}
+            nonSelectedCategories={nonSelectedCategories}
+            selectedMovieCinemas={[]}
+            nonSelectedMovieCinemas={nonSelectedMovieCinemas}
+            selectedActors={[]}
+          />
+        )}
       </div>
     );
 };

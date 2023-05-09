@@ -29,6 +29,13 @@ namespace API.Helper
                .ForMember(x => x.MoviesCategories, options => options.MapFrom(MapMoviesCategories))
                .ForMember(x => x.MovieCinemasMovies, options => options.MapFrom(MapMMovieCinemasMovies))
                .ForMember(x => x.MoviesActors, options => options.MapFrom(MapMoviesActors));
+        
+        // CreateMap<Movie, MovieDTO>()
+            //    .ForMember(x => x.Category, options => options.MapFrom(MapMoviesCategories))
+            //    .ForMember(x => x.MovieCinemas, options => options.MapFrom(MapMMovieCinemasMovies))
+            //    .ForMember(x => x.Actors, options => options.MapFrom(MapMoviesActors));
+        
+        
         }
 
          private List<MoviesCategories> MapMoviesCategories(CreateMovieDTO createMovieDTO, Movie movie)
