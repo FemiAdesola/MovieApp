@@ -24,10 +24,10 @@ const UpdateActor = () => {
         transformFormData={convertActorToFormData}
         transform={transform}
       >
-        {(entity, edit) => (
+        {(entity, update) => (
           <ActorForm
             model={entity}
-            onSubmit={async (values) => await edit(values)}
+            onSubmit={async (values) => await update(values)}
           />
         )}
       </UpdateEntity>

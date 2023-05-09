@@ -1,5 +1,3 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { CinemasDTO } from '../types/cinemas';
 import { urlMovieCinemas } from '../common/endpoint';
 import Entity from '../utils/Entity';
@@ -7,7 +5,6 @@ import Entity from '../utils/Entity';
 const Cinemas = () => {
     return (
       <div className="container">
-        <h3>Cinemas</h3>
         <Entity<CinemasDTO>
           url={urlMovieCinemas}
           createURL="/cinemas/create"
@@ -35,10 +32,6 @@ const Cinemas = () => {
             </>
           )}
         </Entity>
-
-        <Link className="btn btn-primary" to="create">
-          Create cinemas
-        </Link>
       </div>
     );
 };

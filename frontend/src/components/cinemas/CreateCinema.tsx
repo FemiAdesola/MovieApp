@@ -24,8 +24,7 @@ const CreateCinema = () => {
     return (
       <div>
         <h3>create Cinemas</h3>
-
-        {/* <DisplayError errors={errors} /> */}
+        <DisplayError errors={errors} />
         <CinemasForm
           model={{ name: "" }}
           onSubmit={async (values) => await create(values)}
