@@ -30,6 +30,7 @@ namespace API.Database
          protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.AddICommonConfig();
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
         
@@ -38,5 +39,8 @@ namespace API.Database
         public DbSet<Actor> Actors { get; set; } = null!;
         public DbSet<Movie> Movies { get; set; } = null!;
         public DbSet<MovieCinema> MovieCinemas { get; set; } = null!;
+        public DbSet<MoviesActors> MoviesActors { get; set; } = null!;
+        public DbSet<MovieCinemasMovies> MovieCinemasMovies { get; set; } = null!;
+        public DbSet<MoviesCategories> MoviesCategories { get; set; } = null!;
     }
 }
