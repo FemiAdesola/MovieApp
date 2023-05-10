@@ -3,11 +3,17 @@ import { ActorMovieDTO } from "./actor";
 import { CategoryDTO } from "./category";
 import { CinemasDTO } from "./cinemas";
 
-export interface IMovieDTO
-{
-    id: number;
-    title: string;
-    poster: string;
+export interface IMovieDTO {
+  id: number;
+  title: string;
+  poster: string;
+  inCinemas: boolean;
+  trailer: string;
+  summary?: string;
+  releaseDate: Date;
+  categories: CategoryDTO[];
+  movieCinemas: CinemasDTO[];
+  actors: ActorMovieDTO[];
 }
 
 export interface IMovieListProps{

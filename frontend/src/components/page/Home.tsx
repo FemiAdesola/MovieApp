@@ -6,40 +6,40 @@ const Home = () => {
      const [movies, setMovies] = useState<FrontPageProps>();
 
      useEffect(() => {
-       const loading = setTimeout(() => {
-         return setMovies({
-           inTheaters: [
-             {
-               id: 1,
-               title: "Spider-Man: Far From Home",
-               poster:
-                 "https://upload.wikimedia.org/wikipedia/en/b/bd/Spider-Man_Far_From_Home_poster.jpg",
-             },
-             {
-               id: 2,
-               title: "Spider-Man: Far From Home",
-               poster:
-                 "https://upload.wikimedia.org/wikipedia/en/b/bd/Spider-Man_Far_From_Home_poster.jpg",
-             },
-           ],
-           upcomingMovies: [
-             {
-               id: 3,
-               title: "Spider-Man: Far From Home",
-               poster:
-                 "https://upload.wikimedia.org/wikipedia/en/b/bd/Spider-Man_Far_From_Home_poster.jpg",
-             },
-             {
-               id: 4,
-               title: "Spider-Man: Far From Home",
-               poster:
-                 "https://upload.wikimedia.org/wikipedia/en/b/bd/Spider-Man_Far_From_Home_poster.jpg",
-             },
-           ],
-         });
-       }, 1000);
+      //  const loading = setTimeout(() => {
+        //  return setMovies({
+        //    inTheaters: [
+        //      {
+        //        id: 1,
+        //        title: "Spider-Man: Far From Home",
+        //        poster:
+        //          "https://upload.wikimedia.org/wikipedia/en/b/bd/Spider-Man_Far_From_Home_poster.jpg",
+        //      },
+        //      {
+        //        id: 2,
+        //        title: "Spider-Man: Far From Home",
+        //        poster:
+        //          "https://upload.wikimedia.org/wikipedia/en/b/bd/Spider-Man_Far_From_Home_poster.jpg",
+        //      },
+        //    ],
+        //    upcomingMovies: [
+        //      {
+        //        id: 3,
+        //        title: "Spider-Man: Far From Home",
+        //        poster:
+        //          "https://upload.wikimedia.org/wikipedia/en/b/bd/Spider-Man_Far_From_Home_poster.jpg",
+        //      },
+        //      {
+        //        id: 4,
+        //        title: "Spider-Man: Far From Home",
+        //        poster:
+        //          "https://upload.wikimedia.org/wikipedia/en/b/bd/Spider-Man_Far_From_Home_poster.jpg",
+        //      },
+        //    ],
+        //  });
+      //  }, []);
 
-       return () => clearTimeout(loading);
+      //  return () => clearTimeout(loading);
      }, []);
     return (
       <div className="container">
