@@ -35,7 +35,7 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoryDTO>>> GetAll([FromQuery] PaginationDTO paginationDTO)
+        public async Task<ActionResult<List<CategoryDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             // _logger.LogInformation("Getting all the genres");
             var queryable = _context.Categories.AsQueryable();
@@ -44,6 +44,16 @@ namespace API.Controllers
             var category = await queryable
                 .OrderBy(x =>x.Name)
                 .Paginate(paginationDTO)
+                .ToListAsync();
+
+            return _mapper.Map<List<CategoryDTO>>(category);
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<List<CategoryDTO>>> GetAll()
+        {
+            var category = await _context.Categories
+                .OrderBy(x =>x.Name)
                 .ToListAsync();
 
             return _mapper.Map<List<CategoryDTO>>(category);
