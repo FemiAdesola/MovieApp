@@ -137,6 +137,22 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var movie = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(movie);
+            await _context.SaveChangesAsync();
+            await _fileStorage.DeleteFile(movie.Poster!, container);
+            return NoContent();
+        }
+        
         [HttpGet("{id:int}")]
         public async Task<ActionResult<MovieDTO>> Get(int id)
         {
