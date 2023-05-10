@@ -32,11 +32,12 @@ export interface CreateMovieDTO {
   title: string;
   inCinemas: boolean;
   trailer: string;
+  summary?: string;
   releaseDate?: Date;
   poster?: File;
   posterURL?: string;
   categoryIds?: number[];
-  cinemasIds?: number[];
+  movieCinemaIds?: number[];
   actors?: ActorMovieDTO[];
 }
 

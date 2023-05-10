@@ -30,10 +30,10 @@ namespace API.Helper
                .ForMember(x => x.MovieCinemasMovies, options => options.MapFrom(MapMMovieCinemasMovies))
                .ForMember(x => x.MoviesActors, options => options.MapFrom(MapMoviesActors));
         
-        // CreateMap<Movie, MovieDTO>()
-            //    .ForMember(x => x.Category, options => options.MapFrom(MapMoviesCategories))
-            //    .ForMember(x => x.MovieCinemas, options => options.MapFrom(MapMMovieCinemasMovies))
-            //    .ForMember(x => x.Actors, options => options.MapFrom(MapMoviesActors));
+            CreateMap<Movie, MovieDTO>()
+               .ForMember(x => x.Categories, options => options.MapFrom(MapMoviesCategories))
+               .ForMember(x => x.MovieCinemas, options => options.MapFrom(MapMMovieCinemasMovies))
+               .ForMember(x => x.Actors, options => options.MapFrom(MapMoviesActors));
         
         
         }
@@ -44,9 +44,9 @@ namespace API.Helper
 
             if (createMovieDTO.CategoryIds == null) { return result; }
 
-            foreach (var id in createMovieDTO.CategoryIds)
+            foreach (var Id in createMovieDTO.CategoryIds)
             {
-                result.Add(new MoviesCategories() { CategoryId = id });
+                result.Add(new MoviesCategories() { CategoryId = Id });
             }
 
             return result;
@@ -57,11 +57,11 @@ namespace API.Helper
         {
             var result = new List<MovieCinemasMovies>();
 
-            if (createMovieDTO.MovieCinemasIds == null) { return result; }
+            if (createMovieDTO.MovieCinemaIds == null) { return result; }
 
-            foreach (var id in createMovieDTO.MovieCinemasIds)
+            foreach (var Id in createMovieDTO.MovieCinemaIds)
             {
-                result.Add(new MovieCinemasMovies() { MovieCinemaId = id });
+                result.Add(new MovieCinemasMovies() { MovieCinemaId = Id });
             }
 
             return result;
@@ -76,6 +76,63 @@ namespace API.Helper
             foreach (var actor in createMovieDTO.Actors)
             {
                 result.Add(new MoviesActors() { ActorId = actor.Id, Character = actor.Character });
+            }
+
+            return result;
+        }
+        private List<CategoryDTO> MapMoviesCategories(Movie movie, MovieDTO moviedto)
+        {
+            var result = new List<CategoryDTO>();
+
+            if (movie.MoviesCategories != null)
+            {
+                foreach (var category in movie.MoviesCategories)
+                {
+                    result.Add(new CategoryDTO() { Id = category.CategoryId, Name = category.Category.Name});
+                }
+            }
+
+            return result;
+        }
+
+        private List<ActorsMovieDTO> MapMoviesActors(Movie movie, MovieDTO movieDTO)
+        {
+            var result = new List<ActorsMovieDTO>();
+
+            if (movie.MoviesActors != null)
+            {
+                foreach (var moviesActors in movie.MoviesActors)
+                {
+                    result.Add(new ActorsMovieDTO()
+                    {
+                        Id = moviesActors.ActorId,
+                        Name = moviesActors.Actor.Name,
+                        Character = moviesActors.Character,
+                        Image= moviesActors.Actor.Image,
+                        Order = moviesActors.Order
+                    });
+                }
+            }
+
+            return result;
+        }
+
+        private List<MovieCinemaDTO> MapMMovieCinemasMovies(Movie movie, MovieDTO movieDTO)
+        {
+            var result = new List<MovieCinemaDTO>();
+
+            if (movie.MovieCinemasMovies != null)
+            {
+                foreach (var movieCinemaMovies in movie.MovieCinemasMovies)
+                {
+                    result.Add(new MovieCinemaDTO()
+                    {
+                        Id = movieCinemaMovies.MovieCinemaId,
+                        Name = movieCinemaMovies.MovieCinema.Name,
+                        Latitude = movieCinemaMovies.MovieCinema.Location.Y,
+                        Longitude = movieCinemaMovies.MovieCinema.Location.X
+                    });
+                }
             }
 
             return result;

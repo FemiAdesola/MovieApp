@@ -1,4 +1,5 @@
 import { CreateActorDTO } from "../types/actor";
+import { CreateMovieDTO } from "../types/movie";
 
 
 export const convertActorToFormData = (actor: CreateActorDTO): FormData => {
@@ -36,4 +37,31 @@ export const formatDate = (date: Date) =>{
     format.formatToParts(date);
 
   return `${year}-${month}-${day}`;
+}
+
+export const convertMovieToFormData =(movie: CreateMovieDTO) =>{
+  const formData = new FormData();
+
+  formData.append("title", movie.title);
+
+  if (movie.summary) {
+    formData.append("summary", movie.summary);
+  }
+
+  formData.append("trailer", movie.trailer);
+  formData.append("inCinemas", String(movie.inCinemas));
+
+  if (movie.releaseDate) {
+    formData.append("releaseDate", formatDate(movie.releaseDate));
+  }
+
+  if (movie.poster) {
+    formData.append("poster", movie.poster);
+  }
+
+  formData.append("categoryIds", JSON.stringify(movie.categoryIds));
+  formData.append("moviecinemaIds", JSON.stringify(movie.movieCinemaIds));
+  formData.append("actors", JSON.stringify(movie.actors));
+
+  return formData;
 }

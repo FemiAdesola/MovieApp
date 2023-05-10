@@ -15,8 +15,8 @@ namespace API.DTOs
         [ModelBinder(BinderType =typeof(TypeBinder<List<int>>))]
         public List<int> CategoryIds { get; set; }
 
-         [ModelBinder(BinderType =typeof(TypeBinder<List<int>>))]
-        public List<int> MovieCinemasIds { get; set; }
+        [ModelBinder(BinderType =typeof(TypeBinder<List<int>>))]
+        public List<int> MovieCinemaIds { get; set; }
 
         [ModelBinder(BinderType =typeof(TypeBinder<List<CreateMovieActorsDTO>>))]
         public List<CreateMovieActorsDTO> Actors { get; set; }

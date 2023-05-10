@@ -10,14 +10,14 @@ namespace API.Controllers
 {
     public class MovieController : BaseApiController
     {
-        private readonly ILogger<MovieCinemaController> _logger;
+        private readonly ILogger<MovieController> _logger;
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly IFileStorage _fileStorage;
         private string container = "movies";
 
         public MovieController(
-            ILogger<MovieCinemaController> logger,
+            ILogger<MovieController> logger,
              AppDbContext context, 
              IMapper mapper,
             IFileStorage fileStorage )
@@ -57,17 +57,23 @@ namespace API.Controllers
             return new MoviePostGetDTO() { Categories = categoryDTO, MovieCinemas = movieCinemaDTO };
         }
 
-
-        [HttpGet("searchByName/{query}")]
-        public async Task<ActionResult<List<ActorsMovieDTO>>>SearchByName(string query)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<MovieDTO>> Get(int Id)
         {
-            if (string.IsNullOrWhiteSpace(query)) { return new List<ActorsMovieDTO> (); }
-            return await _context.Actors
-            .Where (x => x.Name.Contains (query))
-            .OrderBy(x => x.Name)
-            .Select (x => new ActorsMovieDTO { Id = x.Id, Name = x.Name, Image = x.Image })
-            .Take(5)
-            .ToListAsync();
+            var movie = await _context.Movies
+                .Include(x => x.MoviesCategories).ThenInclude(x => x.Category)
+                .Include(x => x.MovieCinemasMovies).ThenInclude(x => x.MovieCinema)
+                .Include(x => x.MoviesActors).ThenInclude(x => x.Actor)
+                .FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<MovieDTO>(movie);
+            dto.Actors = dto.Actors.OrderBy(x => x.Order).ToList();
+            return dto;
         }
 
                 // for mapping movies according to the order which actor come to UI

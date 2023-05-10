@@ -4,10 +4,14 @@ import { CategoryDTO } from '../types/category';
 import { CinemasDTO } from '../types/cinemas';
 import axios, { AxiosResponse } from 'axios';
 import { urlMovies } from '../common/endpoint';
-import { MoviesPostGetDTOProps } from '../types/movie';
+import { CreateMovieDTO, MoviesPostGetDTOProps } from '../types/movie';
 import Loading from '../utils/Loading';
+import { convertMovieToFormData } from '../features/convertToFormData';
+import { useNavigate } from 'react-router-dom';
+import DisplayError from '../utils/DisplayError';
 
 const CreateMovie = () => {
+    const navigate = useNavigate();
   const [nonSelectedCategories, setNonSelectedCategories] =
     useState<CategoryDTO[]>([])
   
@@ -15,6 +19,7 @@ const CreateMovie = () => {
       CinemasDTO[]
       >([]);
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState<string[]>([]);
   
   useEffect(() => {
     axios.get(`${urlMovies}/postget`)
@@ -25,15 +30,33 @@ const CreateMovie = () => {
     })
   }, [])
     
+const  create = async(movie: CreateMovieDTO) => {
+  try {
+    const formData = convertMovieToFormData(movie);
+    const response = await axios({
+      method: "post",
+      url: urlMovies,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    navigate(`/movie/${response.data}`);
+  } catch (error) {
+    setErrors(error.response.data);
+  }
+}
+
+
     return (
       <div>
         <h3>Create movies</h3>
+        <DisplayError errors={errors} />
         {loading ? (
           <Loading />
         ) : (
           <MovieForm
             model={{ title: "", inCinemas: false, trailer: "" }}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={async (values) => await create(values)}
             selectedCategories={[]}
             nonSelectedCategories={nonSelectedCategories}
             selectedMovieCinemas={[]}

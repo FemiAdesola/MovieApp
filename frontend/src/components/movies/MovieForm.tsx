@@ -44,7 +44,7 @@ const MovieForm = (props: MovieFormProps) => {
         initialValues={props.model}
         onSubmit={(values, actions) => {
           values.categoryIds = selectedCategories.map((item) => item.key);
-          values.cinemasIds = selectedMovieCinemas.map((item) => item.key);
+          values.movieCinemaIds = selectedMovieCinemas.map((item) => item.key);
           values.actors = selectedActors;
           props.onSubmit(values, actions);
         }}
@@ -67,7 +67,7 @@ const MovieForm = (props: MovieFormProps) => {
               imageURL={props.model.posterURL}
             />
 
-            {/* <MarkdownField displayName="Summary" field="summary" /> */}
+            <MarkdownField displayName="Summary" field="summary" />
 
             <MuiltipleSelectorField
               displayName="Categories"
