@@ -1,15 +1,20 @@
-import React from "react";
-import { IFilterMoviesFormProps} from "../types/movie";
+import React, { useEffect, useState } from "react";
+import { IFilterMoviesFormProps, IMovieDTO } from "../types/movie";
 import { Field, Form, Formik } from "formik";
 import { CategoryDTO } from "../types/category";
 import Button from "../features/Button";
+import axios, { AxiosResponse } from "axios";
+import { urlCategories, urlMovies } from "../common/endpoint";
+import { useLocation, useNavigate } from "react-router-dom";
+import MovieList from "./MovieList";
+import Pagination from "../utils/Pagination";
 
 const FilterMovies = () => {
-    const categories: CategoryDTO[] = [
-      { id: 1, name: "Drama" },
-      { id: 2, name: "Comedy" },
-      { id: 3, name: "Warmovies"}
-    ];
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
+  const [movies, setMovies] = useState<IMovieDTO[]>([]);
+  const query = new URLSearchParams(useLocation().search);
+  const [totalAmountOfPages, setTotalAmountOfPages] = useState(0);
 
   const initialState: IFilterMoviesFormProps = {
     title: "",
@@ -20,13 +25,82 @@ const FilterMovies = () => {
     recordsPerPage: 10,
   };
 
+  useEffect(() => {
+    axios
+      .get(`${urlCategories}/all`)
+      .then((response: AxiosResponse<CategoryDTO[]>) => {
+        setCategories(response.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (query.get("title")) {
+      initialState.title = query.get("title")!;
+    }
+
+    if (query.get("categoryId")) {
+      initialState.categoryId = parseInt(query.get("categoryId")!, 10);
+    }
+
+    if (query.get("upcomingReleases")) {
+      initialState.upcomingReleases = true;
+    }
+
+    if (query.get("inCinemas")) {
+      initialState.inCinemas = true;
+    }
+
+    if (query.get("page")) {
+      initialState.page = parseInt(query.get("page")!, 10);
+    }
+
+    searchMovies(initialState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const searchMovies = (values: IFilterMoviesFormProps) => {
+    modifyURL(values);
+    axios
+      .get(`${urlMovies}/filter`, { params: values })
+      .then((response: AxiosResponse<IMovieDTO[]>) => {
+        const list = parseInt(response.headers["totalamountofrecords"], 10);
+        setTotalAmountOfPages(Math.ceil(list / values.recordsPerPage));
+        setMovies(response.data);
+      });
+  };
+
+  const modifyURL = (values: IFilterMoviesFormProps) => {
+    const queryStrings: string[] = [];
+
+    if (values.title) {
+      queryStrings.push(`title=${values.title}`);
+    }
+
+    if (values.categoryId !== 0) {
+      queryStrings.push(`categoryId=${values.categoryId}`);
+    }
+
+    if (values.upcomingReleases) {
+      queryStrings.push(`upcomingReleases=${values.upcomingReleases}`);
+    }
+
+    if (values.inCinemas) {
+      queryStrings.push(`inCinemas=${values.inCinemas}`);
+    }
+
+    queryStrings.push(`page=${values.page}`);
+    navigate(`/movies/filter?${queryStrings.join("&")}`);
+    //  navigate(`/movies/filter?${queryStrings.join("&")}`);
+  };
+
   return (
     <div className="container">
       <h3>Filter movies</h3>
       <Formik
         initialValues={initialState}
         onSubmit={(values) => {
-          console.log(values);
+          values.page = 1;
+          searchMovies(values);
         }}
       >
         {(formikProps) => (
@@ -95,6 +169,7 @@ const FilterMovies = () => {
                     className="btn btn-danger ms-3"
                     onClick={() => {
                       formikProps.setValues(initialState);
+                      searchMovies(initialState);
                     }}
                   >
                     Clear
@@ -102,6 +177,16 @@ const FilterMovies = () => {
                 </div>
               </div>
             </Form>
+            <MovieList movies={movies} />
+            <Pagination
+              totalAmountOfPages={totalAmountOfPages}
+              currentPage={formikProps.values.page}
+              onChange={(newPage) => {
+                formikProps.values.page = newPage;
+                searchMovies(formikProps.values);
+              }}
+              radio={1}
+            />
           </>
         )}
       </Formik>

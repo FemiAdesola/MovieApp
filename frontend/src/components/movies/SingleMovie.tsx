@@ -9,7 +9,7 @@ import axios from "axios";
 import AlertContext from "../features/AlertContext";
 
 const SingleMovie = (props: IMovieDTO) => {
-  const buildLink = () => `movies/${props.id}`;
+  const buildLink = () => `/movies/${props.id}`;
   const customAlert = useContext(AlertContext);
   
   const  deleteMovieHandler = () =>{
