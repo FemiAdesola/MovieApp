@@ -88,7 +88,7 @@ namespace API.Helper
             {
                 foreach (var category in movie.MoviesCategories)
                 {
-                    result.Add(new CategoryDTO() { Id = category.CategoryId, Name = category.Category.Name});
+                    result.Add(new CategoryDTO() { Id = category.CategoryId, Name = category.Category!.Name});
                 }
             }
 
@@ -128,7 +128,7 @@ namespace API.Helper
                     result.Add(new MovieCinemaDTO()
                     {
                         Id = movieCinemaMovies.MovieCinemaId,
-                        Name = movieCinemaMovies.MovieCinema.Name,
+                        Name = movieCinemaMovies.MovieCinema!.Name,
                         Latitude = movieCinemaMovies.MovieCinema.Location.Y,
                         Longitude = movieCinemaMovies.MovieCinema.Location.X
                     });

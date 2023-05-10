@@ -19,15 +19,15 @@ namespace API.EXception
             {
                 var response = new List<string>();
                 var badRequestObjectResult = context.Result as BadRequestObjectResult;
-                if (badRequestObjectResult.Value is string)
+                if (badRequestObjectResult!.Value is string)
                 {
-                    response.Add(badRequestObjectResult.Value.ToString());
+                    response.Add(badRequestObjectResult.Value!.ToString()!);
                 }
                 else
                 {
                     foreach (var key in context.ModelState.Keys)
                     {
-                        foreach (var error in context.ModelState[key].Errors)
+                        foreach (var error in context.ModelState[key]!.Errors)
                         {
                             response.Add($"{key}: {error.ErrorMessage}");
                         }

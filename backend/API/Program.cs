@@ -5,13 +5,14 @@ using API.Extensions;
 
 internal class Program
 {
-    private static async Task Main(string[] args)
+    private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
 
-        builder.Services.AddControllers(options =>{
+        builder.Services.AddControllers(options =>
+        {
             options.Filters.Add(typeof(MyException));
             options.Filters.Add(typeof(ParseBadRequest));
         }).ConfigureApiBehaviorOptions(BadRequestBehavior.Parse)
@@ -36,10 +37,10 @@ internal class Program
                               .AllowAnyOrigin()
                               .AllowAnyHeader()
                               .AllowAnyMethod()
-                              .WithExposedHeaders(new string[] {"totalAmountOfRecords"})
+                              .WithExposedHeaders(new string[] { "totalAmountOfRecords" })
                           ;
-                      });
-                  });
+                        });
+                });
 
         var app = builder.Build();
 
@@ -55,12 +56,12 @@ internal class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
-           app.UseAuthorization();
-        // app.MapControllers();
-        app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+        app.UseAuthorization();
+        app.MapControllers();
+        // app.UseEndpoints(endpoints =>
+        //     {
+        //         endpoints.MapControllers();
+        //     });
 
         app.Run();
     }

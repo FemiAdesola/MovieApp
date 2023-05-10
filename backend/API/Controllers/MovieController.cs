@@ -115,7 +115,8 @@ namespace API.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, [FromForm] CreateMovieDTO createMovieDTO)
         {
-            var movie = await _context.Movies.Include(x => x.MoviesActors)
+            var movie = await _context.Movies
+                .Include(x => x.MoviesActors)
                 .Include(x => x.MoviesCategories)
                 .Include(x => x.MovieCinemasMovies)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -199,9 +200,12 @@ namespace API.Controllers
         public async Task<ActionResult<MovieDTO>> Get(int id)
         {
             var movie = await _context.Movies
-                .Include(x => x.MoviesCategories).ThenInclude(x => x.Category)
-                .Include(x => x.MovieCinemasMovies).ThenInclude(x => x.MovieCinema)
-                .Include(x => x.MoviesActors).ThenInclude(x => x.Actor)
+                .Include(x => x.MoviesCategories)
+                    .ThenInclude(x => x.Category)
+                .Include(x => x.MovieCinemasMovies)
+                    .ThenInclude(x => x.MovieCinema)
+                .Include(x => x.MoviesActors)
+                    .ThenInclude(x => x.Actor)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (movie == null)
