@@ -21,8 +21,8 @@ export interface IMovieListProps{
 }
 
 export interface FrontPageProps {
-    inTheaters?: IMovieDTO[];
-    upcomingMovies?: IMovieDTO[];
+  inCinemas?: IMovieDTO[];
+  upcomingReleases?: IMovieDTO[];
 }
 
 export interface IFilterMoviesFormProps{
