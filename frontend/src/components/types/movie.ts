@@ -64,3 +64,12 @@ export interface MoviesPostGetDTOProps {
   categories: CategoryDTO[];
   movieCinemas: CinemasDTO[];
 }
+
+export interface MoviePutGetDTO {
+  movie: IMovieDTO;
+  selectedCategories: CategoryDTO[];
+  nonSelectedCategories: CategoryDTO[];
+  selectedMovieCinemas: CinemasDTO[];
+  nonSelectedMovieCinemas: CinemasDTO[];
+  actors: ActorMovieDTO[];
+}

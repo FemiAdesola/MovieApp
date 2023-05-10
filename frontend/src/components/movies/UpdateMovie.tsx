@@ -1,54 +1,73 @@
-import React from 'react';
-import MovieForm from './MovieForm';
-import { CategoryDTO } from '../types/category';
-import { CinemasDTO } from '../types/cinemas';
-import { ActorMovieDTO } from '../types/actor';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
+
+import MovieForm from "./MovieForm";
+import { CreateMovieDTO, MoviePutGetDTO } from "../types/movie";
+import { urlMovies } from "../common/endpoint";
+import { convertMovieToFormData } from "../features/convertToFormData";
+import DisplayError from "../utils/DisplayError";
+import Loading from "../utils/Loading";
 
 const UpdateMovie = () => {
-   const nonSelectedCategories: CategoryDTO[] = [
-     { id: 2, name: "Drama" },
-   ];
-    const selectedCategories: CategoryDTO[] = [
-      { id: 1, name: "Comedy" },
-    ];
-  
-   const nonSelectedMovieCinemas: CinemasDTO[] = [
-     { id: 2, name: "Helsinki" },
-   ];
-   const selectedMovieCinemas: CinemasDTO[] = [
-     { id: 1, name: "Espoo" },
+  const navigate = useNavigate();
+  const { id }: any = useParams();
+  const [movie, setMovie] = useState<CreateMovieDTO>();
+  const [moviePutGet, setMoviePutGet] = useState<MoviePutGetDTO>();
+  const [errors, setErrors] = useState<string[]>([]);
 
-   ];
-  
-  const selectedActor: ActorMovieDTO[] = [
-    {
-      id: 1,
-      name: "Felipe",
-      character: "Laughter",
-      image:
-        "data:image/jpeg;base64,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",
-    },
-  ];
-  
-    return (
-      <div>
-        <h3>Update movies</h3>
+  useEffect(() => {
+    axios
+      .get(`${urlMovies}/PutGet/${id}`)
+      .then((response: AxiosResponse<MoviePutGetDTO>) => {
+        const model: CreateMovieDTO = {
+          title: response.data.movie.title,
+          inCinemas: response.data.movie.inCinemas,
+          trailer: response.data.movie.trailer,
+          posterURL: response.data.movie.poster,
+          summary: response.data.movie.summary,
+          releaseDate: new Date(response.data.movie.releaseDate),
+        };
+
+        setMovie(model);
+        setMoviePutGet(response.data);
+      });
+  }, [id]);
+
+  const update = async (movieToEdit: CreateMovieDTO) => {
+    try {
+      const formData = convertMovieToFormData(movieToEdit);
+      await axios({
+        method: "put",
+        url: `${urlMovies}/${id}`,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      navigate(`/movies/${id}`);
+    } catch (error) {
+      setErrors(error.response.data);
+    }
+  };
+
+  return (
+    <div>
+      <h3>Update movies</h3>
+      <DisplayError errors={errors} />
+      {movie && moviePutGet ? (
         <MovieForm
-          model={{
-            title: "Toy movies",
-            inCinemas: true,
-            trailer: "http",
-            releaseDate: new Date("2019-01-01T00:00:00"),
-          }}
-          onSubmit={(values) => console.log(values)}
-          selectedCategories={selectedCategories}
-          nonSelectedCategories={nonSelectedCategories}
-          selectedMovieCinemas={selectedMovieCinemas}
-          nonSelectedMovieCinemas={nonSelectedMovieCinemas}
-          selectedActors={selectedActor}
+          model={movie}
+          onSubmit={async (values) => await update(values)}
+          selectedCategories={moviePutGet.selectedCategories}
+          nonSelectedCategories={moviePutGet.nonSelectedCategories}
+          selectedMovieCinemas={moviePutGet.selectedMovieCinemas}
+          nonSelectedMovieCinemas={moviePutGet.nonSelectedMovieCinemas}
+          selectedActors={moviePutGet.actors}
         />
-      </div>
-    );
+      ) : (
+        <Loading />
+      )}
+    </div>
+  );
 };
 
 export default UpdateMovie;
