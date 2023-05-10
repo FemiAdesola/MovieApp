@@ -57,6 +57,30 @@ namespace API.Controllers
             return new MoviePostGetDTO() { Categories = categoryDTO, MovieCinemas = movieCinemaDTO };
         }
 
+        [HttpGet]
+        public async Task<ActionResult<HomePageDTO>> Get()
+        {
+            var top = 6;
+            var today = DateTime.Today;
+
+            var upcomingReleases = await _context.Movies
+                .Where(x => x.ReleaseDate > today)
+                .OrderBy(x => x.ReleaseDate)
+                .Take(top)
+                .ToListAsync();
+
+            var inCinemas = await _context.Movies
+                .Where(x => x.InCinemas)
+                .OrderBy(x => x.ReleaseDate)
+                .Take(top)
+                .ToListAsync();
+
+            var homePageDTO = new HomePageDTO();
+            homePageDTO.UpcomingReleases = _mapper.Map<List<MovieDTO>>(upcomingReleases);
+            homePageDTO.InCinemas = _mapper.Map<List<MovieDTO>>(inCinemas);
+            return homePageDTO;
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<MovieDTO>> Get(int Id)
         {
