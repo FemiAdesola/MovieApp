@@ -1,5 +1,6 @@
 using API.Database;
 using API.DTOs;
+using API.Helper;
 using API.Models;
 using API.Services.Interface;
 using AutoMapper;
@@ -153,6 +154,47 @@ namespace API.Controllers
             return NoContent();
         }
         
+        [HttpGet("filter")]
+        public async Task<ActionResult<List<MovieDTO>>> Filter([FromQuery] FilterMoviesDTO filterMoviesDTO)
+        {
+            var moviesQueryable = _context.Movies.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filterMoviesDTO.Title))
+            {
+                moviesQueryable = moviesQueryable.Where(x => x.Title!.Contains(filterMoviesDTO.Title));
+            }
+
+            if (filterMoviesDTO.InCinemas)
+            {
+                moviesQueryable = moviesQueryable.Where(x => x.InCinemas);
+            }
+
+            if (filterMoviesDTO.UpcomingReleases)
+            {
+                var today = DateTime.Today;
+
+                moviesQueryable = moviesQueryable
+                    .Where(x => x.ReleaseDate > today);
+            }
+
+            if (filterMoviesDTO.CategoryId != 0)
+            {
+                moviesQueryable = moviesQueryable
+                    .Where(x => x.MoviesCategories!.Select(y => y.CategoryId)
+                    .Contains(filterMoviesDTO.CategoryId));
+            }
+
+            await HttpContext.InsertParametersPaginationInHeader(moviesQueryable);
+            var movies = await moviesQueryable
+                .OrderBy(x => x.Title)
+                .Paginate(filterMoviesDTO.PaginationDTO)
+                .ToListAsync();
+
+            return _mapper.Map<List<MovieDTO>>(movies);
+        }
+
+
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<MovieDTO>> Get(int id)
         {
@@ -168,7 +210,7 @@ namespace API.Controllers
             }
 
             var dto = _mapper.Map<MovieDTO>(movie);
-            dto.Actors = dto.Actors.OrderBy(x => x.Order).ToList();
+            dto.Actors = dto.Actors!.OrderBy(x => x.Order).ToList();
             return dto;
         }
 
