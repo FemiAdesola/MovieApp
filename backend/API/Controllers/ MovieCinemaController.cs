@@ -21,7 +21,16 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Post(CreateMovieCinemaDTO createMovieCinemaDTO)
+        {
+            var movieCinema = _mapper.Map<MovieCinema>(createMovieCinemaDTO);
+            _context.Add(movieCinema);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
         [HttpGet]
+        
         public async Task<ActionResult<List<MovieCinemaDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var queryable = _context.MovieCinemas.AsQueryable();
@@ -44,15 +53,6 @@ namespace API.Controllers
             }
 
             return _mapper.Map<MovieCinemaDTO>(movieCinema);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Post(CreateMovieCinemaDTO createMovieCinemaDTO)
-        {
-            var movieCinema = _mapper.Map<MovieCinema>(createMovieCinemaDTO);
-            _context.Add(movieCinema);
-            await _context.SaveChangesAsync();
-            return NoContent();
         }
 
         [HttpPut("{id:int}")]

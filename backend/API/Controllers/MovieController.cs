@@ -82,6 +82,67 @@ namespace API.Controllers
             return homePageDTO;
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<MovieDTO>> Get(int id)
+        {
+            var movie = await _context.Movies
+                .Include(x => x.MoviesCategories)
+                    .ThenInclude(x => x.Category)
+                .Include(x => x.MovieCinemasMovies)
+                    .ThenInclude(x => x.MovieCinema)
+                .Include(x => x.MoviesActors)
+                    .ThenInclude(x => x.Actor)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<MovieDTO>(movie);
+            dto.Actors = dto.Actors!.OrderBy(x => x.Order).ToList();
+            return dto;
+        }
+
+        [HttpGet("filter")]
+        public async Task<ActionResult<List<MovieDTO>>> Filter([FromQuery] FilterMoviesDTO filterMoviesDTO)
+        {
+            var moviesQueryable = _context.Movies.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filterMoviesDTO.Title))
+            {
+                moviesQueryable = moviesQueryable.Where(x => x.Title!.Contains(filterMoviesDTO.Title));
+            }
+
+            if (filterMoviesDTO.InCinemas)
+            {
+                moviesQueryable = moviesQueryable.Where(x => x.InCinemas);
+            }
+
+            if (filterMoviesDTO.UpcomingReleases)
+            {
+                var today = DateTime.Today;
+
+                moviesQueryable = moviesQueryable
+                    .Where(x => x.ReleaseDate > today);
+            }
+
+            if (filterMoviesDTO.CategoryId != 0)
+            {
+                moviesQueryable = moviesQueryable
+                    .Where(x => x.MoviesCategories!.Select(y => y.CategoryId)
+                    .Contains(filterMoviesDTO.CategoryId));
+            }
+
+            await HttpContext.InsertParametersPaginationInHeader(moviesQueryable);
+            var movies = await moviesQueryable
+                .OrderBy(x => x.Title)
+                .Paginate(filterMoviesDTO.PaginationDTO)
+                .ToListAsync();
+
+            return _mapper.Map<List<MovieDTO>>(movies);
+        }
+
         [HttpGet("putget/{id:int}")]
         public async Task<ActionResult<MoviePutGetDTO>> PutGet(int id)
         {
@@ -155,69 +216,6 @@ namespace API.Controllers
             return NoContent();
         }
         
-        [HttpGet("filter")]
-        public async Task<ActionResult<List<MovieDTO>>> Filter([FromQuery] FilterMoviesDTO filterMoviesDTO)
-        {
-            var moviesQueryable = _context.Movies.AsQueryable();
-
-            if (!string.IsNullOrEmpty(filterMoviesDTO.Title))
-            {
-                moviesQueryable = moviesQueryable.Where(x => x.Title!.Contains(filterMoviesDTO.Title));
-            }
-
-            if (filterMoviesDTO.InCinemas)
-            {
-                moviesQueryable = moviesQueryable.Where(x => x.InCinemas);
-            }
-
-            if (filterMoviesDTO.UpcomingReleases)
-            {
-                var today = DateTime.Today;
-
-                moviesQueryable = moviesQueryable
-                    .Where(x => x.ReleaseDate > today);
-            }
-
-            if (filterMoviesDTO.CategoryId != 0)
-            {
-                moviesQueryable = moviesQueryable
-                    .Where(x => x.MoviesCategories!.Select(y => y.CategoryId)
-                    .Contains(filterMoviesDTO.CategoryId));
-            }
-
-            await HttpContext.InsertParametersPaginationInHeader(moviesQueryable);
-            var movies = await moviesQueryable
-                .OrderBy(x => x.Title)
-                .Paginate(filterMoviesDTO.PaginationDTO)
-                .ToListAsync();
-
-            return _mapper.Map<List<MovieDTO>>(movies);
-        }
-
-
-
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<MovieDTO>> Get(int id)
-        {
-            var movie = await _context.Movies
-                .Include(x => x.MoviesCategories)
-                    .ThenInclude(x => x.Category)
-                .Include(x => x.MovieCinemasMovies)
-                    .ThenInclude(x => x.MovieCinema)
-                .Include(x => x.MoviesActors)
-                    .ThenInclude(x => x.Actor)
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (movie == null)
-            {
-                return NotFound();
-            }
-
-            var dto = _mapper.Map<MovieDTO>(movie);
-            dto.Actors = dto.Actors!.OrderBy(x => x.Order).ToList();
-            return dto;
-        }
-
                 // for mapping movies according to the order which actor come to UI
         private void AnnotateActorsOrder(Movie movie)
         {
