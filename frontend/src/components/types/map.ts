@@ -2,7 +2,7 @@ export interface MapProps {
   height: string;
   coordinates: CoordinateDTO[];
   handleMapClick(coordinates: CoordinateDTO): void;
-//   readOnly: boolean;
+  readOnly: boolean;
 }
 
 export  interface MapClickProps {
