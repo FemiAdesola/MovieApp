@@ -10,7 +10,7 @@ configureValidations();
 const App = () => {
   const [claims, setClaims] = useState<Claim[]>([
     { name: 'email', value: 'femi@123.com' },
-    { name:'role', value:'admin'}
+    // { name:'role', value:'admin'}
   ]);
 
   const isAdmin = () => {
@@ -23,11 +23,11 @@ const App = () => {
 
   return (
     <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
-      {router.routes && !isAdmin() ? (
+      {/* {router.routes && !isAdmin() ? (
         <>You are not allowed to see ths page</>
-      ) : (
+      ) : ( */}
         <RouterProvider router={router} />
-      )}
+      {/* )} */}
     </AuthenticationContext.Provider>
   );
  

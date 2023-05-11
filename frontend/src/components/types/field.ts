@@ -4,7 +4,8 @@ import { CoordinateDTO } from "./map";
 
 export interface TextFieldProps {
     field: string
-    displayName: string
+  displayName: string
+  type: 'text' | 'password'
 }
 
 export interface DateFieldProps{

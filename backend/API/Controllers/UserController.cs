@@ -13,10 +13,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/v1/users")]
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
+       
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;

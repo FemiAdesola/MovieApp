@@ -16,6 +16,7 @@ import CreateMovie from "../movies/CreateMovie";
 import FilterMovies from "../movies/FilterMovies";
 import NotFound from "./NotFound";
 import MovieDetails from "../movies/MovieDetails";
+import Register from "../page/Register";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
 
-      { path: "categories", element: <Categories />  },
+      { path: "categories", element: <Categories /> },
       { path: "categories/update/:id", element: <UpdateCategory /> },
       { path: "categories/create", element: <CreateCategory /> },
 
@@ -41,6 +42,8 @@ export const router = createBrowserRouter([
       { path: "movies/update/:id", element: <UpdateMovie /> },
       { path: "movies/create", element: <CreateMovie /> },
       { path: "movies/:id", element: <MovieDetails /> },
+
+      { path: "register", element: <Register /> },
 
       { path: "*", element: <NotFound /> },
     ],
