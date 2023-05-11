@@ -17,6 +17,7 @@ import FilterMovies from "../movies/FilterMovies";
 import NotFound from "./NotFound";
 import MovieDetails from "../movies/MovieDetails";
 import Register from "../page/Register";
+import Login from "../auth/Login";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
       { path: "movies/:id", element: <MovieDetails /> },
 
       { path: "register", element: <Register /> },
+      { path: "login", element: <Login /> },
 
       { path: "*", element: <NotFound /> },
     ],

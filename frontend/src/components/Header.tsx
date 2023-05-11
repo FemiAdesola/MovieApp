@@ -20,9 +20,9 @@ const Header = () => {
                 Filter Movies
               </NavLink>
             </li>
-            <Authorized
+            {/* <Authorized
               role="admin"
-              authorized={
+              authorized={ */}
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                   <li className="nav-item">
                     <NavLink className="nav-link" to="/categories">
@@ -45,8 +45,8 @@ const Header = () => {
                     </NavLink>
                   </li>
                 </ul>
-              }
-            />
+              {/* }
+            /> */}
           </ul>
         </div>
       </div>
