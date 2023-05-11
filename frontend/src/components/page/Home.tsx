@@ -4,6 +4,7 @@ import MovieList from "../movies/MovieList";
 import axios, { AxiosResponse } from "axios";
 import { urlMovies } from "../common/endpoint";
 import AlertContext from "../features/AlertContext";
+import Authorized from "../auth/Authorized";
 
 const Home = () => {
   const [movies, setMovies] = useState<FrontPageProps>();
@@ -25,6 +26,12 @@ const Home = () => {
           loadMoviesData();
         }}
       >
+        <Authorized
+          authorized={<>You are authorized</>}
+          notAuthorized={<>You are  are not authorized</>}
+          role="admin"
+        />
+
         <h3> Movies</h3>
         <MovieList movies={movies?.inCinemas} />
         <h3>Upcoming movies</h3>

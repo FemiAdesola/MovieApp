@@ -7,6 +7,7 @@ import ConfirmMessage from "../utils/ConfirmMessage";
 import { urlMovies } from "../common/endpoint";
 import axios from "axios";
 import AlertContext from "../features/AlertContext";
+import Authorized from "../auth/Authorized";
 
 const SingleMovie = (props: IMovieDTO) => {
   const buildLink = () => `/movies/${props.id}`;
@@ -25,21 +26,25 @@ const SingleMovie = (props: IMovieDTO) => {
       <p>
         <Link to={buildLink()}>{props.title}</Link>
       </p>
-      <div>
-        <Link
-          style={{ marginRight: "1rem" }}
-          className="btn btn-info"
-          to={`/movies/update/${props.id}`}
-        >
-          Update
-        </Link>
-        <Button
-          onClick={() => ConfirmMessage(() => deleteMovieHandler())}
-          className="btn btn-danger"
-        >
-          Delete
-        </Button>
-      </div>
+      <Authorized
+        role="admin"
+        authorized={
+          <div>
+            <Link
+              style={{ marginRight: "1rem" }}
+              className="btn btn-info"
+              to={`/movies/update/${props.id}`}
+            >
+              Update
+            </Link>
+            <Button
+              onClick={() => ConfirmMessage(() => deleteMovieHandler())}
+              className="btn btn-danger"
+            >
+              Delete
+            </Button>
+          </div>}
+      />
     </div>
   );
 };
