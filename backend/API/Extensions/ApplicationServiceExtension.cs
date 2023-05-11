@@ -1,7 +1,12 @@
+using System.Text;
+using API.Database;
 using API.Helper;
 using API.Services.Implementations;
 using API.Services.Interface;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 
@@ -26,7 +31,30 @@ namespace API.Extensions
                 NtsGeometryServices
                 .Instance
                 .CreateGeometryFactory(srid:4326));
-             services.AddHttpContextAccessor();
+            services.AddHttpContextAccessor();
+
+            // for authetication services
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options=>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            ValidateIssuer = false,
+                            ValidateAudience = false,
+                            ValidateLifetime = true,
+                            // ValidIssuer = config["AppSettings:Issuer"],
+                            // ValidAudience = config["AppSettings:Audience"],
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("Secret").Value!)),
+                            ClockSkew = TimeSpan.Zero
+                        };
+                });
+            //
+
             return services;
         }
     }

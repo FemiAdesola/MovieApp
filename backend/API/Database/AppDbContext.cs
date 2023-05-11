@@ -1,10 +1,12 @@
 using System.Reflection;
 using API.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Database
 {
-    public class AppDbContext : DbContext 
+    // public class AppDbContext : DbContext 
+       public class AppDbContext : IdentityDbContext
     {
         static AppDbContext()
         {
