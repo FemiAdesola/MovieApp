@@ -1,17 +1,19 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./components/utils/Router";
 import configureValidations from "./components/common/validation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Claim } from "./components/auth/auth";
 import AuthenticationContext from "./components/auth/AuthenticationContext";
+import { getClaims } from "./components/auth/Jwt";
 
 configureValidations();
 
 const App = () => {
-  const [claims, setClaims] = useState<Claim[]>([
-    { name: 'email', value: 'femi@123.com' },
-    // { name:'role', value:'admin'}
-  ]);
+  const [claims, setClaims] = useState<Claim[]>([]);
+
+  useEffect(() => {
+    setClaims(getClaims());
+  }, []);
 
   const isAdmin = () => {
     return (
