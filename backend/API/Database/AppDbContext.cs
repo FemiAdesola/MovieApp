@@ -44,5 +44,6 @@ namespace API.Database
         public DbSet<MoviesActors> MoviesActors { get; set; } = null!;
         public DbSet<MovieCinemasMovies> MovieCinemasMovies { get; set; } = null!;
         public DbSet<MoviesCategories> MoviesCategories { get; set; } = null!;
+        public DbSet<Rating> Ratings { get; set; } = null!;
     }
 }

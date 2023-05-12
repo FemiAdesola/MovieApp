@@ -2,11 +2,17 @@ using System.Text.Json.Serialization;
 using API.Database;
 using API.EXception;
 using API.Extensions;
+using System.IdentityModel.Tokens.Jwt;
 
 internal class Program
 {
+    public Program(IConfiguration configuration)
+    {
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+    }
     private static void Main(string[] args)
     {
+        
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
