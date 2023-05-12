@@ -14,6 +14,8 @@ export interface IMovieDTO {
   categories: CategoryDTO[];
   movieCinemas: CinemasDTO[];
   actors: ActorMovieDTO[];
+  userVote: number;
+  averageVote: number;
 }
 
 export interface IMovieListProps{

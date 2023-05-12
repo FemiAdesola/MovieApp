@@ -66,9 +66,9 @@ const MovieDetails = () => {
         | {movie.releaseDate.toDateString()} {" "}
         | Your vote:<Ratings
           maximumValue={5}
-          selectedValue={0}
+          selectedValue={movie.userVote}
           onChange={handleRate}
-        /> 
+        /> | Average rating: {movie.averageVote}
         <div style={{ display: "flex", marginTop: "1rem" }}>
           <span style={{ display: "inline-block", marginRight: "1rem" }}>
             <img

@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { Claim } from "./components/auth/auth";
 import AuthenticationContext from "./components/auth/AuthenticationContext";
 import { getClaims } from "./components/auth/Jwt";
+import configureInterceptor from "./components/auth/HttpInterceptor";
 
 configureValidations();
+configureInterceptor();
 
 const App = () => {
   const [claims, setClaims] = useState<Claim[]>([]);
