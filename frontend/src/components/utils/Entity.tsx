@@ -67,9 +67,11 @@ const Entity = <T extends object>(props:EntityProps<T>) =>{
     <div>
       <h3>{props.title}</h3>
       <DisplayError errors={errors} />
-      <Link className="btn btn-primary" to={props.createURL}>
-        Create {props.entityName}
-      </Link>
+      {props.createURL ? (
+        <Link className="btn btn-primary" to={props.createURL}>
+          Create {props.entityName}
+        </Link>
+      ) : null}
       <RecordsPerPageSelection
         onChange={(amountOfRecords) => {
           setPage(1);

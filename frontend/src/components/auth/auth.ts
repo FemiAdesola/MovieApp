@@ -1,5 +1,7 @@
 import { FormikHelpers } from "formik";
 import { ReactElement } from "react";
+import { UserCredentialsDTO } from "../users/usersType";
+
 
 export interface AuthorizedProps {
   authorized: ReactElement;
@@ -20,17 +22,7 @@ export interface AuthFormProps {
   ): void;
 }
 
-export interface UserCredentialsDTO {
-  email: string;
-  password: string;
-}
-
 export interface AuthenticationDTO {
   token: string;
   expiration: Date;
-}
-
-export interface UserDTO {
-  id: string;
-  email: string;
 }

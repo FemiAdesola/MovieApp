@@ -2,12 +2,13 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 
 import { urlUsers } from "../common/endpoint";
-import { AuthenticationDTO, UserCredentialsDTO } from "../auth/auth";
+import { AuthenticationDTO} from "../auth/auth";
 import DisplayError from "../utils/DisplayError";
 import AuthForm from "../auth/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { getClaims, saveToken } from "../auth/Jwt";
 import AuthenticationContext from "../auth/AuthenticationContext";
+import { UserCredentialsDTO } from "../users/usersType";
 
 const Register = () => {
   const navigate = useNavigate();

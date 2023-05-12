@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AuthenticationDTO, UserCredentialsDTO } from "./auth";
+import { AuthenticationDTO } from "./auth";
 import axios from "axios";
 import { urlUsers } from "../common/endpoint";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import DisplayError from "../utils/DisplayError";
 import AuthForm from "./AuthForm";
 import { getClaims, saveToken } from "./Jwt";
 import AuthenticationContext from "./AuthenticationContext";
+import { UserCredentialsDTO } from "../users/usersType";
 
 const Login = () => {
   const navigate = useNavigate();
