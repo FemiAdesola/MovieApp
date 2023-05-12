@@ -11,5 +11,7 @@ namespace API.DTOs
         public List<CategoryDTO>? Categories { get; set; }
         public List<MovieCinemaDTO>? MovieCinemas { get; set; }
         public List<ActorsMovieDTO>? Actors { get; set; }
+        public double AverageVotes { get; set; }
+        public int UserVotes { get; set; }
     }
 }
