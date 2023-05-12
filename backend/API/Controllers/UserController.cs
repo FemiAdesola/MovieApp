@@ -10,6 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using API.Helper;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -38,6 +41,38 @@ namespace API.Controllers
             _context = context;
             _mapper = mapper;
             _authenticationRepo = authenticationRepo;
+        }
+
+        [HttpGet("listUsers")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        public async Task<ActionResult<List<UserDTO>>> GetListUsers(
+            [FromQuery] PaginationDTO paginationDTO)
+        {
+            var queryable = _context.Users.AsQueryable();
+            await HttpContext.InsertParametersPaginationInHeader(queryable);
+            var users = await queryable
+                .OrderBy(x => x.Email)
+                .Paginate(paginationDTO)
+                .ToListAsync();
+            return _mapper.Map<List<UserDTO>>(users);
+        }
+
+        [HttpPost("makeAdmin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        public async Task<ActionResult> MakeAdmin([FromBody] string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            await _userManager.AddClaimAsync(user!, new Claim("role", "admin"));
+            return NoContent();
+        }
+
+        [HttpPost("removeAdmin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        public async Task<ActionResult> RemoveAdmin([FromBody] string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            await _userManager.RemoveClaimAsync(user!, new Claim("role", "admin"));
+            return NoContent();
         }
 
         [HttpPost("create")]
