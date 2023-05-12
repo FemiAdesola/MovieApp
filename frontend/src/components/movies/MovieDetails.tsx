@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { Link, useParams } from 'react-router-dom';
 
-import { urlMovies } from "../common/endpoint";
+import { urlMovies, urlRatings } from "../common/endpoint";
 import { IMovieDTO } from '../types/movie';
 import Loading from '../utils/Loading';
 import generateEmbeddedVideoURL from '../features/generateEmbeddedVideoURL';
 import ReactMarkdown from 'react-markdown';
 import { CoordinateDTO } from '../types/map';
 import Map from '../utils/Map';
+import Ratings from '../ratings/Ratings';
+import Swal from 'sweetalert2';
+
 
 const MovieDetails = () => {
     const { id }: any = useParams();
@@ -39,8 +42,14 @@ const MovieDetails = () => {
     return [];
     }
 
+  const handleRate = (rate: number) => {
+    axios.post(urlRatings, { rating: rate, movieId: id }).then(() => {
+      Swal.fire({ icon: "success", title: "Rating received" });
+    });
+  };
+
     return movie ? (
-      <div>
+      <>
         <h2>
           {movie.title} ({movie.releaseDate.getFullYear()})
         </h2>
@@ -54,7 +63,12 @@ const MovieDetails = () => {
             {category.name}
           </Link>
         ))}{" "}
-        | {movie.releaseDate.toDateString()}
+        | {movie.releaseDate.toDateString()} {" "}
+        | Your vote:<Ratings
+          maximumValue={5}
+          selectedValue={0}
+          onChange={handleRate}
+        /> 
         <div style={{ display: "flex", marginTop: "1rem" }}>
           <span style={{ display: "inline-block", marginRight: "1rem" }}>
             <img
@@ -125,7 +139,7 @@ const MovieDetails = () => {
             <Map coordinates={transformCoordinates()} readOnly={true} />
           </div>
         ) : null}
-      </div>
+      </>
     ) : (
       <Loading />
     );
