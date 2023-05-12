@@ -3,11 +3,14 @@ using API.DTOs;
 using API.Helper;
 using API.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy ="IsAdmin")]
     public class  MovieCinemaController : BaseApiController
     {
         private readonly ILogger<MovieCinemaController> _logger;

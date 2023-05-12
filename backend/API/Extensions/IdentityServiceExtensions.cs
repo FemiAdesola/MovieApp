@@ -30,6 +30,10 @@ namespace API.Extensions
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("AppSettings:Secret").Value!))
                         };
                     });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin", policy => policy.RequireRole("admin"));
+            });
             return services;
         }
     }
