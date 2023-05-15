@@ -3,6 +3,8 @@ using API.Database;
 using API.EXception;
 using API.Extensions;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
+using API.DTOs;
 
 internal class Program
 {
@@ -40,7 +42,7 @@ internal class Program
                     options.AddPolicy("CorsPolicy", builder =>
                         {
                             builder
-                               .WithOrigins("http://localhost:3003")
+                               .WithOrigins("http://localhost:3000")
                               .AllowAnyOrigin()
                               .AllowAnyHeader()
                               .AllowAnyMethod()

@@ -64,7 +64,7 @@ const Entity = <T extends object>(props:EntityProps<T>) =>{
   );
 
   return (
-    <div>
+    <>
       <h3>{props.title}</h3>
       <DisplayError errors={errors} />
       {props.createURL ? (
@@ -89,7 +89,7 @@ const Entity = <T extends object>(props:EntityProps<T>) =>{
           {props.children(entities!, buttons)}
         </table>
       </ResultList>
-    </div>
+    </>
   );
 };
 

@@ -49,7 +49,7 @@ const CreateMovie = () => {
   };
 
   return (
-    <div>
+    <>
       <h3>Create movies</h3>
       <DisplayError errors={errors} />
       {loading ? (
@@ -65,7 +65,7 @@ const CreateMovie = () => {
           selectedActors={[]}
         />
       )}
-    </div>
+    </>
   );
 };
 

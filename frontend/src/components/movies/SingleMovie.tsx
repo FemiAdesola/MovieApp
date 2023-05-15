@@ -43,7 +43,8 @@ const SingleMovie = (props: IMovieDTO) => {
             >
               Delete
             </Button>
-          </div>}
+      </div>
+          }
       />
     </div>
   );

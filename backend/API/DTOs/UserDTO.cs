@@ -1,7 +1,8 @@
 namespace API.DTOs
 {
-    public class UserDTO : BaseDTO
+    public class UserDTO 
     {
+        public string Id { get; set; }
         public string Email { get; set; } = null!;
     }
 }

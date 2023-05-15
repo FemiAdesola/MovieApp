@@ -30,14 +30,14 @@ const Register = () => {
     }
   };
   return (
-    <div>
+    <>
       <h3>Register</h3>
       <DisplayError errors={errors} />
       <AuthForm
         model={{ email: "", password: "" }}
         onSubmit={async (values) => await register(values)}
       />
-    </div>
+    </>
   );
 };
 

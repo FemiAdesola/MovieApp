@@ -94,7 +94,7 @@ const FilterMovies = () => {
   };
 
   return (
-    <div className="container">
+    <>
       <h3>Filter movies</h3>
       <Formik
         initialValues={initialState}
@@ -190,7 +190,7 @@ const FilterMovies = () => {
           </>
         )}
       </Formik>
-    </div>
+    </>
   );
 };
 

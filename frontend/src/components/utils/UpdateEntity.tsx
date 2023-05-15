@@ -45,11 +45,11 @@ const UpdateEntity = <TCreation, TRead>(
     }
   };
   return (
-    <div className="container">
+    <>
       <h3>Update {props.entityName}</h3>
       <DisplayError errors={errors} />
       {entity ? props.children(entity, update) : <Loading />}
-    </div>
+    </>
   );
 };
 

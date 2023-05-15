@@ -3,8 +3,8 @@ using API.Services.Interface;
 
 namespace API.Services.Implementations
 {
-    // public class LocalFileStorage : IFileStorage
-     public class LocalFileStorage 
+    public class LocalFileStorage : IFileStorage
+    //  public class LocalFileStorage 
     {
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;

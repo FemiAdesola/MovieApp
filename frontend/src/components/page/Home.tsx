@@ -19,7 +19,7 @@ const Home = () => {
   };
 
   return (
-    <div className="container">
+    <>
       <AlertContext.Provider
         value={() => {
           loadMoviesData();
@@ -36,7 +36,7 @@ const Home = () => {
         <h3>Upcoming movies</h3>
         <MovieList movies={movies?.upcomingReleases} />
       </AlertContext.Provider>
-    </div>
+    </>
   );
 };
 

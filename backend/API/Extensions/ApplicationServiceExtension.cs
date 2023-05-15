@@ -17,15 +17,15 @@ namespace API.Extensions
         {
      
             services.AddAutoMapper(typeof(MappingProfile));
-            services.AddScoped<IFileStorage, AzureFileStorage>();
-            // services.AddScoped<IFileStorage, LocalFileStorage>();
+            // services.AddScoped<IFileStorage, AzureFileStorage>();
+            services.AddScoped<IFileStorage, LocalFileStorage>();
             services.AddSingleton(provider => new MapperConfiguration(config =>
             {
                 var geometryFactor = provider.GetRequiredService<GeometryFactory>();
                 config.AddProfile(new MappingProfile(geometryFactor));
             }).CreateMapper());
             
-             services.AddScoped<IAuthenticationRepo, AuthenticationRepo>();
+            services.AddScoped<IAuthenticationRepo, AuthenticationRepo>();
             services.AddSingleton<GeometryFactory>(
                 NtsGeometryServices
                 .Instance

@@ -24,8 +24,6 @@ namespace API.Database
                 .UseNpgsql(
                     connString, 
                     sqlOptions  => sqlOptions.UseNetTopologySuite())
-                
-               
                 // .AddInterceptors(new AppDbContextSaveChangesInterceptor())
                 .UseSnakeCaseNamingConvention();
         }

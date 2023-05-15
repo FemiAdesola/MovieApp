@@ -22,8 +22,8 @@ namespace API.Extensions
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuerSigningKey = true,
-                            ValidateIssuer = true,
-                            ValidateAudience = true,
+                            ValidateIssuer = false,
+                            ValidateAudience = false,
                             ValidateLifetime = true,
                             ValidIssuer = config["AppSettings:Issuer"],
                             ValidAudience = config["AppSettings:Audience"],

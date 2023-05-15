@@ -18,7 +18,7 @@ namespace API.Controllers
 {
     public class UserController : BaseApiController
     {
-       
+
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
@@ -27,10 +27,10 @@ namespace API.Controllers
         private readonly IAuthenticationRepo _authenticationRepo;
 
         public UserController(
-            UserManager<IdentityUser> userManager, 
-            SignInManager<IdentityUser> signInManager, 
-            IConfiguration configuration, 
-            AppDbContext context, 
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IConfiguration configuration,
+            AppDbContext context,
             IMapper mapper,
             IAuthenticationRepo authenticationRepo
             )
@@ -79,12 +79,14 @@ namespace API.Controllers
         public async Task<ActionResult<AuthenticationDTO>> Create(
             [FromBody] UserCredentialsDTO userCredentialsDTO)
         {
-            var user = new IdentityUser { 
-                UserName = userCredentialsDTO.Email, 
-                Email = userCredentialsDTO.Email };
+            var user = new IdentityUser
+            {
+                UserName = userCredentialsDTO.Email,
+                Email = userCredentialsDTO.Email
+            };
 
             var result = await _userManager.CreateAsync(user, userCredentialsDTO.Password);
-    
+
             if (result.Succeeded)
             {
                 return await BuildToken(userCredentialsDTO);

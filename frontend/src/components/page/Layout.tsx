@@ -1,19 +1,19 @@
 import React from 'react';
 import Header from '../Header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Footer from '../Footer';
 import FooterBottom from '../FooterBottom';
 
 const Layout = () => {
+  // const navigate = useNavigate();
+  const isAdmin = true;
     return (
-      <div>
+      <>
         <Header />
-        <div className="container">
-          <Outlet />
-        </div>
+        <div className="container">{isAdmin && <Outlet /> }</div>
         <Footer />
-        <div id="footer">{ <FooterBottom />}</div>
-      </div>
+        <div id="footer">{<FooterBottom />}</div>
+      </>
     );
 };
 

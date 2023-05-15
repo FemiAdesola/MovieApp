@@ -1,11 +1,13 @@
-import { RouterProvider } from "react-router-dom";
+import {  RouterProvider } from "react-router-dom";
 import { router } from "./components/utils/Router";
+
 import configureValidations from "./components/common/validation";
 import { useEffect, useState } from "react";
 import { Claim } from "./components/auth/auth";
 import AuthenticationContext from "./components/auth/AuthenticationContext";
 import { getClaims } from "./components/auth/Jwt";
 import configureInterceptor from "./components/auth/HttpInterceptor";
+
 
 configureValidations();
 configureInterceptor();
@@ -30,11 +32,11 @@ const App = () => {
       {/* {router.routes && !isAdmin() ? (
         <>You are not allowed to see ths page</>
       ) : ( */}
-        <RouterProvider router={router} />
-      {/* )} */}
+      <RouterProvider router={router} />
+       {/* )}  */}
     </AuthenticationContext.Provider>
   );
- 
-};
+}
 
 export default App;
+

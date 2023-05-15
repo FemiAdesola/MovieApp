@@ -34,7 +34,7 @@ const  handleClick= (rate: number)=> {
     props.onChange(rate);
   }
     return (
-      <div>
+      <>
         {maximumValueArr.map((_, index) => (
           <FontAwesomeIcon
             onMouseOver={() => handleMouseOver(index + 1)}
@@ -46,7 +46,7 @@ const  handleClick= (rate: number)=> {
             }`}
           />
         ))}
-      </div>
+      </>
     );
 };
 
