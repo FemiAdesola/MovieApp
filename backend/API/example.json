@@ -1,0 +1,19 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "frontend_url": "http://localhost: your localhost/frontend number",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Server=localhost; Port=5432; Database=your-database-name; Username=your-user-name"
+  },
+  "AppSettings": {
+    "Token": "your-secret-token",
+    "Audience": "your name or anyname",
+    "ExpirationHours": 2,
+    "Issuer": "anyname"
+  },
+  "AllowedHosts": "*"
+}

@@ -41,7 +41,7 @@ In addition, the backend was modeled first by designing the model from top to bo
 - Steps to perform the installation for the `Backend`
     + Register the database server with PostgreSQL
     + Check your local machine for .NET Core compatibility from microsoft webiste
-    + Create an `appsettings.json` file in to main root like [example.json file](/Backend/example.json)
+    + Create an `appsettings.json` file in to main root like [example.json file](/backend/API/example.json)
     + Perform these following commands
         1. dotnet restore
         2. dotnet build
@@ -61,6 +61,21 @@ In addition, the backend was modeled first by designing the model from top to bo
 - Users have to generate a token and insert it before they could be able to get total access to all the functionality.
 
 
-### Frontend Filter page
+### Frontend page
 
-![Frontend](/img/FilterPage.png)
+![Frontend](/img/FrontPage.png)
+
+
+### Admin Filter Page
+
+![Admin Filter Page](/img/AdminFilterPage.png)
+
+
+### user Filter Page
+
+![User Filter Page](/img/userFilterPage.png)
+
+
+### Move page
+
+![Move Page](/img/MoviePage.png)
