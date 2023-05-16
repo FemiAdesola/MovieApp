@@ -1,77 +1,19 @@
-using System.Text.Json.Serialization;
-using API.Database;
-using API.EXception;
-using API.Extensions;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Identity;
-using API.DTOs;
+using API;
 
-internal class Program
+namespace MoviesAPI
 {
-    private static void Main(string[] args)
+    public class Program
     {
-        
-        var builder = WebApplication.CreateBuilder(args);
-
-        //for rating clear token
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-        // 
-
-        // Add services to the container.
-        builder.Services.AddControllers(options =>
+        public static void Main(string[] args)
         {
-            options.Filters.Add(typeof(MyException));
-            options.Filters.Add(typeof(ParseBadRequest));
-        }).ConfigureApiBehaviorOptions(BadRequestBehavior.Parse)
-        .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            });
-        builder.Services.AddDbContext<AppDbContext>();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddSwaggerDocumentation();
-        builder.Services.AddIdentityServices(builder.Configuration);
-        builder.Services.AddApplicationServices(builder.Configuration);
-        builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-        builder.Services.AddCors(options =>
-                {
-                    options.AddPolicy("CorsPolicy", builder =>
-                        {
-                            builder
-                               .WithOrigins("http://localhost:3000")
-                              .AllowAnyOrigin()
-                              .AllowAnyHeader()
-                              .AllowAnyMethod()
-                              .WithExposedHeaders(new string[] { "totalAmountOfRecords" })
-                          ;
-                        });
-                });
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            CreateHostBuilder(args).Build().Run();
         }
-
-        app.UseSwaggerDocumentation();
-        app.UseCors("CorsPolicy");
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-        app.UseRouting();
-        app.UseAuthentication();
-        app.UseAuthorization();
-        app.MapControllers();
-        // app.UseEndpoints(endpoints =>
-        //     {
-        //         endpoints.MapControllers();
-        //     });
-
-        app.Run();
+        
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }
