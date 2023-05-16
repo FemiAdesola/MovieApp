@@ -52,6 +52,7 @@ namespace API.Controllers
         }
 
         [HttpGet("all")]
+         [AllowAnonymous]
         public async Task<ActionResult<List<CategoryDTO>>> GetAll()
         {
             var category = await _context.Categories

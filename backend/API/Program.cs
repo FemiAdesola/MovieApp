@@ -8,17 +8,16 @@ using API.DTOs;
 
 internal class Program
 {
-    public Program(IConfiguration configuration)
-    {
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-    }
     private static void Main(string[] args)
     {
         
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        //for rating clear token
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        // 
 
+        // Add services to the container.
         builder.Services.AddControllers(options =>
         {
             options.Filters.Add(typeof(MyException));

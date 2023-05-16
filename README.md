@@ -76,6 +76,11 @@ In addition, the backend was modeled first by designing the model from top to bo
 ![User Filter Page](/img/userFilterPage.png)
 
 
-### Move page
+### Movie page
 
 ![Move Page](/img/MoviePage.png)
+
+
+### Single movie page with rating by users
+
+![Rating Page](/img/Rating.png)

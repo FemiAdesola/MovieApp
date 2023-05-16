@@ -63,12 +63,13 @@ const MovieDetails = () => {
             {category.name}
           </Link>
         ))}{" "}
-        | {movie.releaseDate.toDateString()} {" "}
-        | Your vote:<Ratings
+        | {movie.releaseDate.toDateString()} | Your vote:{" "}
+        <Ratings
           maximumValue={5}
-          selectedValue={movie.userVote}
+          selectedValue={movie.userVotes}
           onChange={handleRate}
-        /> | Average rating: {movie.averageVote}
+        />{" "}
+        | Average rating: {movie.averageVotes}
         <div style={{ display: "flex", marginTop: "1rem" }}>
           <span style={{ display: "inline-block", marginRight: "1rem" }}>
             <img
