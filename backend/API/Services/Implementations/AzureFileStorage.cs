@@ -4,7 +4,7 @@ using Azure.Storage.Blobs;
 namespace API.Services.Implementations
 {
     // public class AzureFileStorage : IFileStorage
-     public class AzureFileStorage
+    public class AzureFileStorage
     {
         private string? connectingString; 
 
