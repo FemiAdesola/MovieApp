@@ -15,43 +15,43 @@ namespace API.Database
         private readonly IConfiguration _config;
         public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration config) : base(options) => _config = config;
 
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        // {
-        //     base.OnConfiguring(optionsBuilder);
-
-        //     var connString = _config.GetConnectionString("DefaultConnection");
-        //     optionsBuilder
-        //         .UseNpgsql(
-        //             connString, 
-        //             sqlOptions  => sqlOptions.UseNetTopologySuite())
-        //         // .AddInterceptors(new AppDbContextSaveChangesInterceptor())
-        //         .UseSnakeCaseNamingConvention();
-        // }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-{
-    base.OnConfiguring(optionsBuilder);
-
-    // Prefer DATABASE_URL from Render
-    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-
-    string connString;
-    if (!string.IsNullOrEmpty(databaseUrl))
-    {
-        var npgsqlBuilder = new Npgsql.NpgsqlConnectionStringBuilder(databaseUrl)
         {
-            SslMode = Npgsql.SslMode.Require
-        };
-        connString = npgsqlBuilder.ConnectionString;
-    }
-    else
-    {
-        connString = _config.GetConnectionString("DefaultConnection")!;
-    }
+            base.OnConfiguring(optionsBuilder);
 
-    optionsBuilder
-        .UseNpgsql(connString, sqlOptions => sqlOptions.UseNetTopologySuite())
-        .UseSnakeCaseNamingConvention();
-}
+            var connString = _config.GetConnectionString("DefaultConnection");
+            optionsBuilder
+                .UseNpgsql(
+                    connString, 
+                    sqlOptions  => sqlOptions.UseNetTopologySuite())
+                // .AddInterceptors(new AppDbContextSaveChangesInterceptor())
+                .UseSnakeCaseNamingConvention();
+        }
+//         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+// {
+//     base.OnConfiguring(optionsBuilder);
+
+//     // Prefer DATABASE_URL from Render
+//     var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+//     string connString;
+//     if (!string.IsNullOrEmpty(databaseUrl))
+//     {
+//         var npgsqlBuilder = new Npgsql.NpgsqlConnectionStringBuilder(databaseUrl)
+//         {
+//             SslMode = Npgsql.SslMode.Require
+//         };
+//         connString = npgsqlBuilder.ConnectionString;
+//     }
+//     else
+//     {
+//         connString = _config.GetConnectionString("DefaultConnection")!;
+//     }
+
+//     optionsBuilder
+//         .UseNpgsql(connString, sqlOptions => sqlOptions.UseNetTopologySuite())
+//         .UseSnakeCaseNamingConvention();
+// }
 
          protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
