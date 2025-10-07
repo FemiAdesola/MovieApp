@@ -1,21 +1,19 @@
-# Use the official .NET SDK image to build the app
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /source
+# Old (currently .NET 8)
+# FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+# FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-# Copy everything and restore dependencies
+# New (use .NET 7)
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /source
 COPY . .
 RUN dotnet restore
-
-# Build and publish the app
 RUN dotnet publish -c Release -o /app
 
-# Use the runtime image to run the app
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app ./
-
-# Expose port
-EXPOSE 8080
-
-# Set the entry point
+COPY --from=build /app .
 ENTRYPOINT ["dotnet", "API.dll"]
