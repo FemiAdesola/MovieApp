@@ -7,10 +7,14 @@ namespace MoviesAPI
     {
         public static void Main(string[] args)
         {
-            Env.Load();
+            if (Environment.GetEnvironmentVariable("RENDER") == null)
+            {
+                Env.Load();
+            }
+
             CreateHostBuilder(args).Build().Run();
         }
-        
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
