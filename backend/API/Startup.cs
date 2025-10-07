@@ -79,6 +79,7 @@ namespace API
                     app.UseSwaggerUI();
                 }
 
+
             app.UseSwaggerDocumentation();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
