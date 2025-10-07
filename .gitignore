@@ -7,5 +7,6 @@
 /backend/API/appsettings.*.json
 /backend/API/obj
 /backend/API/wwwroot/actors
+.env
 
 

@@ -16,7 +16,7 @@
 
 
 ## Introduction
-This is a project project built with ASP .NET core for the backend and React Typescript for the Frontend.
+This is a project built with ASP .NET core for the backend and React Typescript for the Frontend.
 This project aims to understand the connection between the backend, database structure, and the frontend.
 In addition, the backend was modeled first by designing the model from top to bottom and vice versa with ERD (Entity Relation Diagram), to get the relation needed, such as one-one, one-many, and many-many.
 

@@ -1,4 +1,5 @@
 using API;
+using DotNetEnv;
 
 namespace MoviesAPI
 {
@@ -6,6 +7,7 @@ namespace MoviesAPI
     {
         public static void Main(string[] args)
         {
+            Env.Load();
             CreateHostBuilder(args).Build().Run();
         }
         
