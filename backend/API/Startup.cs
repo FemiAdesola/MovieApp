@@ -323,7 +323,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using API.Extensions;
 using Microsoft.EntityFrameworkCore;
-using movieapp;
 
 namespace API
 {
@@ -429,7 +428,7 @@ namespace API
             using var scope = app.ApplicationServices.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             db.Database.Migrate();
-            SeedData.InitializeAsync(scope.ServiceProvider).GetAwaiter().GetResult();
+            
         }
     }
 }
