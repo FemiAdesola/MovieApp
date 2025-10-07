@@ -16,6 +16,9 @@ namespace API
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
+
+            // ✅ Debugging: print JWT secret
+        Console.WriteLine($"🔑 JWT Secret: {Configuration["AppSettings:Secret"]}");
         }
 
         public IConfiguration Configuration { get; }
