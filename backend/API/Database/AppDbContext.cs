@@ -27,31 +27,6 @@ namespace API.Database
                 // .AddInterceptors(new AppDbContextSaveChangesInterceptor())
                 .UseSnakeCaseNamingConvention();
         }
-//         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-// {
-//     base.OnConfiguring(optionsBuilder);
-
-//     // Prefer DATABASE_URL from Render
-//     var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-
-//     string connString;
-//     if (!string.IsNullOrEmpty(databaseUrl))
-//     {
-//         var npgsqlBuilder = new Npgsql.NpgsqlConnectionStringBuilder(databaseUrl)
-//         {
-//             SslMode = Npgsql.SslMode.Require
-//         };
-//         connString = npgsqlBuilder.ConnectionString;
-//     }
-//     else
-//     {
-//         connString = _config.GetConnectionString("DefaultConnection")!;
-//     }
-
-//     optionsBuilder
-//         .UseNpgsql(connString, sqlOptions => sqlOptions.UseNetTopologySuite())
-//         .UseSnakeCaseNamingConvention();
-// }
 
          protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
