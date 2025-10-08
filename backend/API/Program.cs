@@ -1,63 +1,3 @@
-using API;
-using DotNetEnv;
-
-namespace MoviesAPI
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            if (Environment.GetEnvironmentVariable("RENDER") == null)
-            {
-                Env.Load();
-            }
-
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
-
-// // using API;
-// // using DotNetEnv;
-
-// // namespace MoviesAPI
-// // {
-// //     public class Program
-// //     {
-// //         public static void Main(string[] args)
-// //         {
-// //             // Load .env only in local development
-// //             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-// //             if (env == "Development")
-// //             {
-// //                 Env.Load();
-// //                 Console.WriteLine("✅ Loaded .env for local development");
-// //             }
-// //             else
-// //             {
-// //                 Console.WriteLine("🚀 Running in production - using environment variables from Render");
-// //             }
-
-// //             CreateHostBuilder(args).Build().Run();
-// //         }
-
-// //         public static IHostBuilder CreateHostBuilder(string[] args) =>
-// //             Host.CreateDefaultBuilder(args)
-// //                 .ConfigureWebHostDefaults(webBuilder =>
-// //                 {
-// //                     webBuilder.UseStartup<Startup>();
-// //                 });
-// //     }
-// // }
-
-
 // using API;
 // using DotNetEnv;
 
@@ -67,17 +7,9 @@ namespace MoviesAPI
 //     {
 //         public static void Main(string[] args)
 //         {
-//             // Detect environment
-//             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-//             if (env == "Development")
+//             if (Environment.GetEnvironmentVariable("RENDER") == null)
 //             {
 //                 Env.Load();
-//                 Console.WriteLine("✅ Loaded .env for local development");
-//             }
-//             else
-//             {
-//                 Console.WriteLine("🚀 Running in production - using Render environment variables");
 //             }
 
 //             CreateHostBuilder(args).Build().Run();
@@ -91,3 +23,56 @@ namespace MoviesAPI
 //                 });
 //     }
 // }
+
+using API;
+using API.Database;
+using DotNetEnv;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+namespace MoviesAPI
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            // Load .env locally, but not on Render
+            if (Environment.GetEnvironmentVariable("RENDER") == null)
+            {
+                Env.Load();
+            }
+
+            var host = CreateHostBuilder(args).Build();
+
+            // ✅ Apply migrations and seed admin on startup
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<AppDbContext>();
+                    context.Database.Migrate();
+
+                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                    SeedData.EnsureAdminAsync(userManager).GetAwaiter().GetResult();
+
+                    Console.WriteLine("✅ Database migrations applied and admin seeding done.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"❌ Error applying migrations or seeding admin: {ex.Message}");
+                    throw;
+                }
+            }
+
+            host.Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
+}

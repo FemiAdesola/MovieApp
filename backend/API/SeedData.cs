@@ -1,61 +1,24 @@
-// namespace movieapp;
-
 // using Microsoft.AspNetCore.Identity;
-// using Microsoft.EntityFrameworkCore;
-// using API.Database; // Your DbContext namespace
+// using System.Security.Claims;
 
 // public static class SeedData
 // {
-//     public static async Task InitializeAsync(IServiceProvider serviceProvider)
+//     public static async Task EnsureAdminAsync(UserManager<IdentityUser> userManager)
 //     {
-//         using var scope = serviceProvider.CreateScope();
-//         var services = scope.ServiceProvider;
+//         string adminEmail = "fade@1234.com";
 
-//         var context = services.GetRequiredService<AppDbContext>();
-//         var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-//         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-//         // Apply migrations safely
-//         try
-//         {
-//             await context.Database.MigrateAsync();
-//         }
-//         catch (Exception ex)
-//         {
-//             Console.WriteLine($"Migration failed: {ex.Message}");
-//             // Log ex if needed
-//         }
-
-//         // Check if the user already exists
-//         var userEmail = "fade@1234.com";
-//         var user = await userManager.FindByEmailAsync(userEmail);
-
+//         var user = await userManager.FindByEmailAsync(adminEmail);
 //         if (user == null)
 //         {
-//             user = new IdentityUser
-//             {
-//                 UserName = userEmail,
-//                 Email = userEmail,
-//                 EmailConfirmed = true // avoids email confirmation issues
-//             };
-
-//             var password = "Ade1234!";
-//             var result = await userManager.CreateAsync(user, password);
-
-//             if (!result.Succeeded)
-//             {
-//                 Console.WriteLine("User creation failed:");
-//                 foreach (var error in result.Errors)
-//                     Console.WriteLine($" - {error.Description}");
-//             }
-//             else
-//             {
-//                 Console.WriteLine($"User {userEmail} created successfully!");
-//             }
+//             user = new IdentityUser { UserName = adminEmail, Email = adminEmail };
+//             await userManager.CreateAsync(user, "Ade1234!"); // your password
 //         }
-//         else
+
+//         var claims = await userManager.GetClaimsAsync(user);
+//         if (!claims.Any(c => c.Type == "role" && c.Value == "admin"))
 //         {
-//             Console.WriteLine($"User {userEmail} already exists.");
+//             await userManager.AddClaimAsync(user, new Claim("role", "admin"));
+//             Console.WriteLine($"✅ {adminEmail} is now an admin");
 //         }
 //     }
 // }
@@ -67,32 +30,23 @@ namespace API.Database
 {
     public static class SeedData
     {
-        public static async Task SeedDefaultUserAsync(UserManager<IdentityUser> userManager)
+        public static async Task EnsureAdminAsync(UserManager<IdentityUser> userManager)
         {
-            string email = "fade@1234.com";
-            string password = "Ade1234!";
-
-            var user = await userManager.FindByEmailAsync(email);
-            if (user is null)
+            var user = await userManager.FindByEmailAsync("fade@1234.com");
+            if (user != null)
             {
-                user = new IdentityUser
+                var claims = await userManager.GetClaimsAsync(user);
+                if (!claims.Any(c => c.Type == "role" && c.Value == "admin"))
                 {
-                    UserName = email,
-                    Email = email,
-                    EmailConfirmed = true
-                };
-
-                var result = await userManager.CreateAsync(user, password);
-                if (result.Succeeded)
-                {
-                    // Optional: give default user admin role
                     await userManager.AddClaimAsync(user, new Claim("role", "admin"));
+                    Console.WriteLine("✅ fade@1234.com is now an admin");
                 }
-                else
-                {
-                    throw new Exception($"Seeding default user failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-                }
+            }
+            else
+            {
+                Console.WriteLine("⚠️ fade@1234.com not found, cannot assign admin claim");
             }
         }
     }
 }
+
